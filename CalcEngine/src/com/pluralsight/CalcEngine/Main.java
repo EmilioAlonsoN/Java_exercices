@@ -1,35 +1,91 @@
 package com.pluralsight.CalcEngine;
 
 
+import java.util.Scanner;
+
 public class Main {
 
     public static void main(String[] args) {
-	    double[] leftValues = {100.0d, 25.0d, 225.0d, 11.0d};
-	    double[] rightValues ={50.0d, 92.0d, 17.0d, 3.0d};
-	    char[] opCode = {'d', 'a', 's', 'm'};
-	    double[] result = new double[opCode.length];
+        double[] leftVal = {100.0d, 25.0d, 225.0d, 11.0d};
+        double[] rightVal = {50.0d, 92.0d, 17.0d, 3.0d};
+        char[] opCode = {'d', 'a', 's', 'm'};
+        double[] result = new double[opCode.length];
+        if (args.length == 0) {
+            for (int i = 0; i < opCode.length; i++) {
+                result[i] = execute(opCode[i], leftVal[i], rightVal[i]);
+            }
+            for (double currentResult : result)
+                System.out.println("Result is: " + currentResult);
+        } else if(args.length == 1 && args[0].equals("interactive"))
+            executeInteractively();
+        else if (args.length == 3)
+            handleCommandLine(args);
+        else
+            System.out.println("Please provide an operation code and 2 numeric values");
+    }
+    static void executeInteractively(){
+        System.out.println("Enter an operation and two numbers:");
+        Scanner scanner = new Scanner(System.in);
+        String userInput = scanner.nextLine();
+        String[] parts = userInput.split(" ");
+        performOperation(parts);
+    }
 
-	    for (int i = 0; i < opCode.length; i++) {
-            switch (opCode[i]) {
-                case 'a':
-                    result[i] = leftValues[i] + rightValues[i];
-                    break;
-                case 's':
-                    result[i] = leftValues[i] - rightValues[i];
-                    break;
-                case 'm':
-                    result[i] = leftValues[i] * rightValues[i];
-                    break;
-                case 'd':
-                    result[i] = rightValues[i] != 0 ? leftValues[i] / rightValues[i] : 0.0d;
-                    break;
-                default:
-                    System.out.println("Invalid opCode: " + opCode[i]);
-                    result[i] = 0.0d;
-                    break;
+    private static void performOperation(String[] parts) {
+       char opCode = opCodeFromString(parts[0]);
+       double leftVal = valueFromWord(parts[1]);
+       double rightVal = valueFromWord(parts[2]);
+       double result = execute(opCode, leftVal, rightVal);
+        System.out.println(result);
+    }
+
+    private static void handleCommandLine(String[] args) {
+        char opCode = args[0].charAt(0);
+        double lefVal = Double.parseDouble(args[1]);
+        double rightVal = Double.parseDouble(args[2]);
+        double result = execute(opCode, lefVal, rightVal);
+        System.out.println("Result is: " + result);
+    }
+    static double execute(char opCode, double leftVal, double rightVal) {
+        double result;
+        switch (opCode) {
+            case 'a':
+                result = leftVal + rightVal;
+                break;
+            case 's':
+                result = leftVal - rightVal;
+                break;
+            case 'm':
+                result = leftVal * rightVal;
+                break;
+            case 'd':
+                result= rightVal != 0 ? leftVal / rightVal : 0.0d;
+                if (rightVal == 0)
+                    System.out.println("No result");
+                break;
+            default:
+                System.out.println("Invalid opCode: " + opCode);
+                result = 0.0d;
+                break;
+        }
+        return result;
+    }
+    static char opCodeFromString(String operationName) {
+        char opCode = operationName.charAt(0);
+        return opCode;
+    }
+    static double valueFromWord(String word){
+        String[] numberWords = {
+                "zero", "one", "two", "three", "four",
+                "five", "six", "seven", "eight", "nine"
+        };
+        double value = 0d;
+        for(int index = 0; index < numberWords.length; index++){
+            if(word.equals(numberWords[index])){
+                value = index;
+                break;
             }
         }
-        for (double currentResult : result)
-            System.out.println("Result is: " + currentResult);
+        return value;
     }
 }
