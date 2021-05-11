@@ -36,7 +36,37 @@ public class Main {
        double leftVal = valueFromWord(parts[1]);
        double rightVal = valueFromWord(parts[2]);
        double result = execute(opCode, leftVal, rightVal);
-        System.out.println(result);
+       displayResult(opCode, leftVal, rightVal,result);
+    }
+
+    private static void displayResult(char opCode, double leftVal, double rightVal, double result) {
+        char symbol = symbolFromOpCode(opCode);
+        //      StringBuilder builder = new StringBuilder(20);
+        //      builder.append(leftVal);
+        //      builder.append(" ");
+        //      builder.append(symbol);
+        //      builder.append(" ");
+        //      builder.append(rightVal);
+        //      builder.append(" = ");
+        //      builder.append(result);
+        //       String output = builder.toString();
+        // Example String builder
+        String output = String.format("%.3f %c %.3f = %.3f", leftVal, symbol, rightVal, result);
+        //Same result than Builder but using format
+        System.out.println(output);
+    }
+
+    private  static char symbolFromOpCode(char opCode){
+        char[] opCodes = {'a', 's', 'm', 'd'};
+        char[] symbols = {'+', '-', '*', '/'};
+        char symbol = ' ';
+        for(int index = 0; index < opCodes.length; index++){
+            if (opCode == opCodes[index]){
+                symbol = symbols[index];
+                break;
+            }
+        }
+        return symbol;
     }
 
     private static void handleCommandLine(String[] args) {
@@ -49,25 +79,39 @@ public class Main {
     static double execute(char opCode, double leftVal, double rightVal) {
         double result;
         switch (opCode) {
-            case 'a':
-                result = leftVal + rightVal;
-                break;
-            case 's':
-                result = leftVal - rightVal;
-                break;
-            case 'm':
-                result = leftVal * rightVal;
-                break;
-            case 'd':
-                result= rightVal != 0 ? leftVal / rightVal : 0.0d;
+            case 'a' -> result = leftVal + rightVal;
+            case 's' -> result = leftVal - rightVal;
+            case 'm' -> result = leftVal * rightVal;
+            case 'd' -> {
+                result = rightVal != 0 ? leftVal / rightVal : 0.0d;
                 if (rightVal == 0)
                     System.out.println("No result");
-                break;
-            default:
+            }
+            default -> {
                 System.out.println("Invalid opCode: " + opCode);
                 result = 0.0d;
-                break;
-        }
+            }
+        } // Enhance Switch statement
+        //switch (opCode) {
+        //    case 'a':
+        //       result = leftVal + rightVal;
+        //       break;
+        //   case 's':
+        //       result = leftVal - rightVal;
+        //       break;
+        //   case 'm':
+        //      result = leftVal * rightVal;
+        //      break;
+        //  case 'd':
+        //      result= rightVal != 0 ? leftVal / rightVal : 0.0d;
+        //       if (rightVal == 0)
+        //          System.out.println("No result");
+        //       break;
+        //   default:
+        //      System.out.println("Invalid opCode: " + opCode);
+        //       result = 0.0d;
+        //       break;
+        //} Normal Switch statement
         return result;
     }
     static char opCodeFromString(String operationName) {
