@@ -1,79 +1,309 @@
 package com.pluralsight.testprogram;
 
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class Main {
 
-    public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        logInMenu();
+    }
+
+    public static void logInMenu() throws IOException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Welcome to my App.");
+        System.out.println("From now on you will be part of the PinkSkin community.");
+        System.out.println("What would you like to do?");
+        System.out.println("1 Make new Account\n2 Login\n3 Delete Account\n4 Exit");
+        String option = scanner.next();
+        switch (option) {
+            case "1" -> newUser();
+            case "2" -> logInMenu();
+            case "3" -> deleteAccount();
+            default -> {
+                System.out.println("See you again PigSkin...............");
+                System.exit(0);
+            }
+        }
+    }
+
+    public static void newUser() throws IOException {
         System.out.println("Registration App");
-        System.out.println("NOTE: Your user name is unique so it cannot be change");
         System.out.println("App test ");
+
+        String nameregs =nameRegs();
+        String surname = surnameRegs();
+        String email = eMail();
+        String username = userName();
+        passwordOption();
+
+
+    }
+
+    public static String nameRegs() {
+
+        Scanner scanner = new Scanner(System.in);
+
         System.out.print("Name: ");
-        String name = input.next();
-        System.out.print("Surname \"only the first\": ");
-        String surname = input.next();
+        String name = scanner.nextLine();
+
+        System.out.println("Is this you name: " + name + " " + "Press y to confirm else try again.");
+        String confirmation = scanner.nextLine();
+
+        if (!confirmation.equals("y")) {
+            nameRegs();
+        }
+        else
+            return name;
+        return name;
+    }
+
+    public static String surnameRegs(){
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Surname: ");
+        String surname = scanner.nextLine();
+
+        System.out.println("Is this you name: " + surname + " " + "Press y to confirm else try again.");
+        String confirmation = scanner.nextLine();
+
+        if (!confirmation.equals("y")) {
+            surnameRegs();
+        }
+        else
+            return surname;
+        return surname;
+    }
+
+    public static String eMail() throws IOException {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Please enter your email:");
+        String email = scanner.nextLine();
+
+        if (!isValid(email)) {
+            System.out.println("Invalid Email.");
+            eMail();
+        }
+        else if (isValid(email)) {
+            boolean hasDuplicate = checkForDuplicates("Email:", email);
+
+            if (hasDuplicate)
+                eMail();
+            else
+                return email;
+        }
+        return email;
+    }
+
+    public static String userName() throws IOException {
+        Scanner scanner = new Scanner(System.in);
+        Scanner scanner1 = new Scanner(System.in);
+
+        System.out.println("Choose your Username.");
+        System.out.println("NOTE: Your user name is unique so it cannot be change");
         System.out.print("Username: ");
-        String user = input.next();
-        System.out.print("Password Option: Autogenerate password press 1. Chose yourself press 2.");
-        int passOpt = Integer.parseInt(input.next());
-        if (passOpt == 1) {
-            AutoGeneratePassword();
-            try {
-                FileWriter myWriter = new FileWriter("accounts.txt", true);
-                BufferedWriter bw = new BufferedWriter(myWriter);
-                bw.write("Name: " + name + " " + "Surname: " +surname + " " + "User: " +user + " "
-                        + "Password:" + String.copyValueOf(AutoGeneratePassword()));
-                bw.append("\n");
-                bw.close();
-                System.out.println("Successfully wrote to the file.");
-            } catch (IOException e) {
-                System.out.println("An error occurred.");
-                e.printStackTrace();
+        String userName = scanner.nextLine();
 
+        if (userName.contains(" ")) {
+            System.out.println("Username can not contain spaces.");
+            userName();
+        }
+        else if (!userName.contains(" ")) {
+            boolean hasDuplicate = checkForDuplicates("User:", userName);
+            if (hasDuplicate)
+                userName();
+            else {
+                System.out.println("Is this your Username:" + " " + userName + " " + "Press y to confirm else try again.");
+                String confirmation = scanner1.nextLine();
+                if (!confirmation.equals("y")) {
+                    userName();
+                } else
+                    return userName;
             }
-        } else if (passOpt == 2) {
-            System.out.println("Please introduced a password with at least 8 characters");
-            System.out.println("Password: ");
-            String pass = input.next();
-            System.out.print("Confirm Password: ");
-            String conf = input.next();
-            int length1 = pass.length();
-            int passInt = Integer.parseInt(pass);
-            int confInt = Integer.parseInt(conf);
-            if (length1 < 8) {
-                System.out.println("Password is to short, please introduced a password with at least 8 characters");
-                return;
-            }
-            try {
-                FileWriter myWriter = new FileWriter("accounts.txt", true);
-                BufferedWriter bw = new BufferedWriter(myWriter);
-                bw.write("Name: " + name + " " + "Surname: " +surname + " " + "User: " +user + " "
-                        + "Password: " + pass);
-                bw.append("\n");
-                bw.close();
-                System.out.println("Successfully wrote to the file.");
-            } catch (IOException e) {
-                System.out.println("An error occurred.");
-                e.printStackTrace();
+        }
+        return userName;
+    }
+    public static void passwordOption(){
+        Scanner scanner2 = new Scanner(System.in);
 
+        System.out.print("Password Option:\n1 Autogenerate password \n2 Choose yourself \n3 Exit \n ");
+        String passOpt = scanner2.nextLine();
+        switch (passOpt) {
+            case "1" -> autoGeneratedPass();
+            case "2" -> selfChoosePass();
+            case "3" -> {
+                System.out.println("See you again PigSkin...............");
+                System.exit(0);
+            }
+            default -> {
+                System.out.println("Please choose one of the options.");
+                passwordOption();
             }
         }
 
     }
 
+    /*
+    private static void userRegsOptions() {
+        Scanner scanner2 = new Scanner(System.in);
+        System.out.print("Password Option:\n1 Autogenerate password \n2 Choose yourself \n3 Exit \n ");
+        String passOpt = scanner2.nextLine();
+        switch (passOpt) {
+            case "1" -> autoGeneratedPass();
+            case "2" -> selfChoosePass();
+            case "3" -> {
+                System.out.println("See you again PigSkin...............");
+                System.exit(0);
+            }
+            default -> {
+                System.out.println("Please choose one of the options.");
+                userRegsOptions();
+            }
+        }
+    }
 
-    private static char[] AutoGeneratePassword() {
+     */
+
+    public static void autoGeneratedPass() {
+
+        char[] autoGenPass = PasswordGenerator();
+        try {
+            String name = nameRegs();
+            String surname = surnameRegs();
+            String email = eMail();
+            String username = userName();
+            FileWriter myWriter = new FileWriter("accounts.txt", true);
+
+            BufferedWriter bw = new BufferedWriter(myWriter);
+            bw.write(String.format("Name:%30s Surname:%30s Email:%-60s User:%-20s Password:%24s", name, surname, email, username,
+                    String.copyValueOf(autoGenPass)));
+
+            System.out.println("Your user name is:" + username);
+            System.out.println("Your password is:" + String.valueOf(autoGenPass));
+            bw.append("\n");
+            bw.close();
+            System.out.println("Successfully registered.");
+        }
+        catch (IOException e) {
+            System.out.println("An error occurred.");
+            System.out.println("Please try again PickSkin");
+            e.printStackTrace();
+        }
+    }
+
+    public static String selfChoosePass() {
+        Scanner scanner1 = new Scanner(System.in);
+
+        System.out.println("Please introduced a password with at least 8 characters");
+
+        System.out.println("Password: ");
+        String pass = scanner1.nextLine();
+        System.out.println(pass);
+
+        if (pass.contains(" ")){
+            System.out.println("Password can not contain spaces.");
+            selfChoosePass();
+        }
+        else if (pass.isEmpty()){
+            System.out.println("Password is empty.");
+            selfChoosePass();
+        }
+        else {
+            System.out.print("Confirm Password: ");
+            String conf = scanner1.nextLine();
+            boolean checkPassword = (pass.equals(conf));
+
+            if (!checkPassword){
+                System.out.println("Your password do not match.");
+                System.out.println("Try again PinkSkin");
+                selfChoosePass();
+            }
+            else{
+                int length1 = pass.length();
+                if (length1 < 8) {
+                    System.out.println("Password is to short, please introduced a password with at least 8 characters");
+                    System.out.println("Try again PinkSkin");
+                    selfChoosePass();
+                }
+                else finalStepRegs();
+                return pass;
+
+            }
+        }
+        return pass;
+    }
+
+    public static void finalStepRegs(){
+        try {
+            String name = nameRegs();
+            String surname = surnameRegs();
+            String email = eMail();
+            String username = userName();
+            String  pass = selfChoosePass();
+            FileWriter myWriter = new FileWriter("accounts.txt", true);
+            BufferedWriter bw = new BufferedWriter(myWriter);
+            bw.write(String.format("Name:%30s Surname:%30s Email:%-60s User:%-20s Password:%24s", name, surname, email, username, pass));
+            bw.append("\n");
+            bw.close();
+            System.out.println("Your user name is:" + username);
+            System.out.println("Your password is:" + pass);
+            System.out.println("Successfully registered.");
+            System.out.println("Welcome to the community PinkSkin");
+        }
+        catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean checkForDuplicates(String type, String value) throws IOException {
+        File file = new File("C:\\Users\\valde\\IdeaProjects\\TestProgram\\accounts.txt");
+        String[] words = null;
+        FileReader fileReader = new FileReader(file);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        String string;
+        String input = type + value;
+        while ((string = bufferedReader.readLine()) != null) {
+            words = string.split(" ");
+            for (String word : words) {
+                if (word.equals(input)) {
+                    System.out.println("Email already exists.");
+                    System.out.println("Please choose another one.");
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+
+    public static void deleteAccount() {
+    }
+
+    public static boolean isValid(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+                "[a-zA-Z0-9_+&*-]+)*@" +
+                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                "A-Z]{2,7}$";
+
+        Pattern pat = Pattern.compile(emailRegex);
+        if (email == null)
+            return false;
+        return pat.matcher(email).matches();
+    }
+
+    public static char[] PasswordGenerator() {
         String capitalCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String lowerCaseLetters = "abcdefghijklmnopqrstuvwxyz";
         String specialCharacters = "!@#$";
         String numbers = "1234567890";
         String combinedChars = capitalCaseLetters + lowerCaseLetters + specialCharacters + numbers;
+
         Random random = new Random();
         char[] password = new char[20];
 
@@ -88,11 +318,4 @@ public class Main {
         //System.out.println(password);
         return password;
     }
-
-
 }
-
-            
-
-
-
