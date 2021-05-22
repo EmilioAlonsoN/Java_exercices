@@ -324,7 +324,7 @@ public class Main {
     }
 
     public static String loginMenu() throws IOException {
-        //
+        // Function use for the login menu.
         String checkUsername = loginCheckUser();
         String checkEmail = String.valueOf(loginCheckEmail());
         String checkPassword = loginCheckPassword();
@@ -347,7 +347,7 @@ public class Main {
     private static boolean loginChecker(String column, String value,
                                         String column1, String value1,
                                         String column2, String value2) throws IOException {
-        //
+        // Function use to check in the file for user login parameters.
         File file = new File("C:\\Users\\valde\\IdeaProjects\\UserRegistrationProgram\\accounts.txt");
         String[] words;
         FileReader fileReader = new FileReader(file);
@@ -367,7 +367,7 @@ public class Main {
     }
 
     private static String loginCheckUser() throws IOException {
-        //
+        // Function use to check in the file for username credentials looking for the parameter introduced exist.
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter your Username:");
         System.out.print("Username: ");
@@ -391,7 +391,7 @@ public class Main {
     }
 
     private static String loginCheckEmail() throws IOException {
-        //
+        // Function use to check in the file for user email looking for the parameter introduced exist.
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Please enter your email:");
@@ -415,7 +415,7 @@ public class Main {
     }
 
     private static String loginCheckPassword() throws IOException {
-        //
+        // Function use to check in the file for user password looking for the parameter introduced exist.
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Please introduced your password:");
