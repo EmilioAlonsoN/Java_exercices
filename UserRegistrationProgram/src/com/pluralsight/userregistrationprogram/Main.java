@@ -1,18 +1,38 @@
 package com.pluralsight.userregistrationprogram;
 
 
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.Base64;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException,
+                                                  NoSuchPaddingException,
+                                                  NoSuchAlgorithmException,
+                                                  InvalidKeySpecException,
+                                                  InvalidKeyException,
+                                                  InvalidAlgorithmParameterException {
         mainMenu();
     }
 
-    public static void mainMenu() throws IOException {
+    public static void mainMenu()throws  IOException,
+                                         NoSuchPaddingException,
+                                         NoSuchAlgorithmException,
+                                         InvalidKeySpecException,
+                                         InvalidKeyException, InvalidAlgorithmParameterException {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Welcome to my App.");
@@ -33,20 +53,28 @@ public class Main {
         }
     }
 
-    private static void newUser() throws IOException {
+    private static void newUser()throws IOException,
+                                        NoSuchPaddingException,
+                                        NoSuchAlgorithmException,
+                                        InvalidKeySpecException,
+                                        InvalidKeyException, InvalidAlgorithmParameterException {
         // Function to make a new user.
         System.out.println("Registration App");
         System.out.println("App test ");
 
-        String name = String.valueOf(nameRegs());
-        String surname = String.valueOf(surnameRegs());
-        String email = String.valueOf(eMail());
+        //String name = String.valueOf(nameRegs());
+        //String surname = String.valueOf(surnameRegs());
+        //String email = String.valueOf(eMail());
 
         System.out.println("NOTE: Your user name is unique so it cannot be changed");
         System.out.println("Choose your Username.");
 
-        String username = userName();
-        passwordOptions(name, surname, email, username);
+        //String username = userName();
+        //passwordOptions(name, surname, email, username);
+        SecretKey key = FileEncryption.generateKey();
+        //System.out.println(key);
+        //encryptFile(key, Cipher.ENCRYPT_MODE);
+        decryptFile(key, Cipher.DECRYPT_MODE);
         mainMenu();
     }
 
@@ -189,28 +217,49 @@ public class Main {
             e.printStackTrace();
         }
     }
-/*
-    public static void encryptDecrypt(String s,
-                                      int encryptMode,
-                                      File nonEncryptedFile,
-                                      File encryptFile) throws  InvalidKeyException,
-                                                                NoSuchAlgorithmException,
-                                                                InvalidKeySpecException,
-                                                                IOException,
-                                                                NoSuchPaddingException {
-        nonEncryptedFile = new File("accounts.txt");
-        encryptFile = new File("encrypted_file_accounts.txt");
+
+    public static void encryptFile(SecretKey key, int encryptMode) throws InvalidAlgorithmParameterException, IOException {
+         // Encryption test.
+        File nonEncryptedFile = new File("C:\\Users\\valde\\IdeaProjects\\UserRegistrationProgram\\accounts.txt");
+        File encryptFile = new File("C:\\Users\\valde\\IdeaProjects\\UserRegistrationProgram\\encrypted_file_accounts.txt");
         try {
-        encryptDecrypt("12345678", Cipher.ENCRYPT_MODE, nonEncryptedFile, encryptFile);
+            FileEncryption.encryptDecryptFile(key, Cipher.ENCRYPT_MODE, nonEncryptedFile, encryptFile);
+            System.out.println("Encryption completed.");
+            Files.deleteIfExists(Path.of("C:\\Users\\valde\\IdeaProjects\\UserRegistrationProgram\\decrypted_file_accounts.txt"));
         } catch (InvalidKeyException |
                 NoSuchAlgorithmException |
                 InvalidKeySpecException  | NoSuchPaddingException | IOException e) {
             e.printStackTrace();
         }
-
     }
 
- */
+    public static SecretKey getKeyFromFile() throws IOException {
+        FileReader keyFile = new FileReader("key.pub");
+        BufferedReader bufferedReader = new BufferedReader(keyFile);
+        System.out.println(bufferedReader.readLine());
+        String key = new String(bufferedReader.readLine());
+        byte[] decodedKey = Base64.getDecoder().decode(key);
+        SecretKey Key = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+        return null;
+    }
+
+    public static void decryptFile(SecretKey key, int encryptMode) throws IOException {
+        // Encryption test.
+        File encryptFile = new File("C:\\Users\\valde\\IdeaProjects\\UserRegistrationProgram\\encrypted_file_accounts.txt");
+        File nonEncryptedFile = new File("C:\\Users\\valde\\IdeaProjects\\UserRegistrationProgram\\decrypted_file_accounts.txt");
+        try {
+            FileEncryption.encryptDecryptFile(key, Cipher.DECRYPT_MODE,  encryptFile, nonEncryptedFile);
+            System.out.println("Decryption completed.");
+            //Files.deleteIfExists(Path.of("C:\\Users\\valde\\IdeaProjects\\UserRegistrationProgram\\encrypted_file_accounts.txt"));
+        } catch (InvalidKeyException |
+                NoSuchAlgorithmException |
+                InvalidKeySpecException |
+                NoSuchPaddingException |
+                IOException |
+                InvalidAlgorithmParameterException e) {
+            e.printStackTrace();
+        }
+    }
 
     private static String selfChoosePassword() {
         // Function used to obtain a self chosen password from the user.
@@ -281,7 +330,6 @@ public class Main {
 
         Pattern pat = Pattern.compile(emailRegex);
         return pat.matcher(email).matches();
-
     }
 
     private static String passwordGenerator() {
@@ -438,7 +486,7 @@ public class Main {
         return null;
     }
 /*
-    public static void encryptFile (){
+    public static void encryptFile () throws NoSuchAlgorithmException, InvalidKeySpecException {
         FileEncryption secure = new FileEncryption();
 
         // Encrypt code
