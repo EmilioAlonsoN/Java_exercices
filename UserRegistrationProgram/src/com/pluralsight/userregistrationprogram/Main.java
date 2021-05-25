@@ -245,11 +245,6 @@ public class Main {
 
     public static void decryptFile(SecretKey key, int encryptMode) throws IOException {
         // Encryption test.
-        FileReader keyFile = new FileReader("key.pub");
-        BufferedReader bufferedReader = new BufferedReader(keyFile);
-        System.out.println(bufferedReader.readLine());
-        byte[] decodedKey = Base64.getDecoder().decode(String.valueOf(bufferedReader));
-        SecretKey Key = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
         File encryptFile = new File("C:\\Users\\valde\\IdeaProjects\\UserRegistrationProgram\\encrypted_file_accounts.txt");
         File nonEncryptedFile = new File("C:\\Users\\valde\\IdeaProjects\\UserRegistrationProgram\\decrypted_file_accounts.txt");
         try {

@@ -12,9 +12,8 @@ public class MathEquation {
 
     public MathEquation(){}
 
-    public MathEquation(char opCode) {
-        this.opCode = opCode;
-    }
+    public MathEquation(char opCode) {this.opCode = opCode;}
+
     public MathEquation(char opCode, double leftVal, double rightVal) {
         this(opCode);
         this.leftVal = leftVal;
@@ -32,9 +31,27 @@ public class MathEquation {
                 result = 0.0d;
             }
         }
+
         numberOfCal++;
         sumOfResults += result;
     }
+
+    public void execute(double leftVal, double rightVal) {
+        this.leftVal = leftVal;
+        this.rightVal = rightVal;
+
+        execute();
+    }
+
+    public  void  execute(int leftVal, int rightVal) {
+        this.leftVal = leftVal;
+        this.rightVal = rightVal;
+
+        execute();
+
+        result = (int)result;
+    }
+
     public static double getSumOfResults() {return sumOfResults / numberOfCal;}
 
     public double getLeftVal() {return leftVal;}
