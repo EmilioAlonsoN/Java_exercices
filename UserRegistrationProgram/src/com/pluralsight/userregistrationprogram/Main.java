@@ -4,15 +4,14 @@ package com.pluralsight.userregistrationprogram;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
+import java.nio.file.FileSystemException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.Base64;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -34,18 +33,21 @@ public class Main {
                                          InvalidKeySpecException,
                                          InvalidKeyException, InvalidAlgorithmParameterException {
         Scanner scanner = new Scanner(System.in);
-
         System.out.println("Welcome to my App.");
         System.out.println("From now on you will be part of the PinkSkin community.");
         System.out.println("What would you like to do?");
         System.out.println("1 Make new Account\n2 Login\n3 Exit");
         String option = scanner.next();
+        SecretKey key = FileEncryption.generateKey();
+        decryptFile(key);
 
         switch (option) {
-            case "1" -> newUser();//fully operational
-            case "2" -> loginMenu();//almost ready
+            case "1" -> newUser();
+            case "2" -> loginMenu();
             case "3" -> {
                 System.out.println("See you again PigSkin...............");
+                encryptFile(key);
+                deleteFile();
                 System.exit(0);
             }
             default ->
@@ -62,19 +64,16 @@ public class Main {
         System.out.println("Registration App");
         System.out.println("App test ");
 
-        //String name = String.valueOf(nameRegs());
-        //String surname = String.valueOf(surnameRegs());
-        //String email = String.valueOf(eMail());
+        String name = String.valueOf(nameRegs());
+        String surname = String.valueOf(surnameRegs());
+        String email = String.valueOf(eMail());
 
         System.out.println("NOTE: Your user name is unique so it cannot be changed");
         System.out.println("Choose your Username.");
 
-        //String username = userName();
-        //passwordOptions(name, surname, email, username);
-        SecretKey key = FileEncryption.generateKey();
-        //System.out.println(key);
-        //encryptFile(key, Cipher.ENCRYPT_MODE);
-        decryptFile(key, Cipher.DECRYPT_MODE);
+        String username = userName();
+        passwordOptions(name, surname, email, username);
+
         mainMenu();
     }
 
@@ -200,32 +199,49 @@ public class Main {
                                  String pass) {
         // Function to write new user data to the file and terminate the program.
         try {
-            FileWriter myWriter = new FileWriter("accounts.txt", true);
+            FileWriter myWriter = new FileWriter("decrypted_file_accounts.txt", true);
 
 
             BufferedWriter bw = new BufferedWriter(myWriter);
             bw.write(String.format("Name:%s Surname:%s Email:%s User:%s Password:%s",
                     name, surname, email, username, pass));
             bw.append("\n");
-            bw.close();
             System.out.println("Your user name is:" + username);
             System.out.println("Your password is:" + pass);
             System.out.println("Successfully registered.");
+            bw.close();
+            myWriter.close();
         } catch (IOException e) {
             System.out.println("An error occurred.");
             System.out.println("Please try again PickSkin");
             e.printStackTrace();
         }
+
     }
 
-    public static void encryptFile(SecretKey key, int encryptMode) throws InvalidAlgorithmParameterException, IOException {
-         // Encryption test.
-        File nonEncryptedFile = new File("C:\\Users\\valde\\IdeaProjects\\UserRegistrationProgram\\accounts.txt");
-        File encryptFile = new File("C:\\Users\\valde\\IdeaProjects\\UserRegistrationProgram\\encrypted_file_accounts.txt");
+    private static void deleteFile() throws IOException {
+        // Function use to deleted the decrypt file after new version is save and encrypted.
+        File file = new File("C:\\Users\\valde\\IdeaProjects" +
+                "\\UserRegistrationProgram\\decrypted_file_accounts.txt");
+        while (file.exists()) {
+            try {
+                Files.deleteIfExists(Path.of("C:\\Users\\valde\\IdeaProjects" +
+                        "\\UserRegistrationProgram\\decrypted_file_accounts.txt"));
+            } catch (FileSystemException e) {
+                System.out.println();
+            }
+        }
+
+    }
+
+    private static void encryptFile(SecretKey key) throws InvalidAlgorithmParameterException {
+        // Function use to encrypt the file-database with the users data.
+        File nonEncryptedFile = new File("C:\\Users\\valde\\IdeaProjects" +
+                                                    "\\UserRegistrationProgram\\decrypted_file_accounts.txt");
+        File encryptFile = new File("C:\\Users\\valde\\IdeaProjects" +
+                                               "\\UserRegistrationProgram\\encrypted_file_accounts.txt");
         try {
             FileEncryption.encryptDecryptFile(key, Cipher.ENCRYPT_MODE, nonEncryptedFile, encryptFile);
-            System.out.println("Encryption completed.");
-            Files.deleteIfExists(Path.of("C:\\Users\\valde\\IdeaProjects\\UserRegistrationProgram\\decrypted_file_accounts.txt"));
         } catch (InvalidKeyException |
                 NoSuchAlgorithmException |
                 InvalidKeySpecException  | NoSuchPaddingException | IOException e) {
@@ -233,24 +249,15 @@ public class Main {
         }
     }
 
-    public static SecretKey getKeyFromFile() throws IOException {
-        FileReader keyFile = new FileReader("key.pub");
-        BufferedReader bufferedReader = new BufferedReader(keyFile);
-        System.out.println(bufferedReader.readLine());
-        String key = new String(bufferedReader.readLine());
-        byte[] decodedKey = Base64.getDecoder().decode(key);
-        SecretKey Key = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
-        return null;
-    }
-
-    public static void decryptFile(SecretKey key, int encryptMode) throws IOException {
-        // Encryption test.
-        File encryptFile = new File("C:\\Users\\valde\\IdeaProjects\\UserRegistrationProgram\\encrypted_file_accounts.txt");
-        File nonEncryptedFile = new File("C:\\Users\\valde\\IdeaProjects\\UserRegistrationProgram\\decrypted_file_accounts.txt");
+    private static void decryptFile(SecretKey key) {
+        // Function use to decrypt the file-database with the users data.
+        File encryptFile = new File("C:\\Users\\valde\\IdeaProjects" +
+                                               "\\UserRegistrationProgram\\encrypted_file_accounts.txt");
+        File nonEncryptedFile = new File("C:\\Users\\valde\\IdeaProjects" +
+                                                    "\\UserRegistrationProgram\\decrypted_file_accounts.txt");
         try {
             FileEncryption.encryptDecryptFile(key, Cipher.DECRYPT_MODE,  encryptFile, nonEncryptedFile);
-            System.out.println("Decryption completed.");
-            //Files.deleteIfExists(Path.of("C:\\Users\\valde\\IdeaProjects\\UserRegistrationProgram\\encrypted_file_accounts.txt"));
+            //
         } catch (InvalidKeyException |
                 NoSuchAlgorithmException |
                 InvalidKeySpecException |
@@ -301,7 +308,8 @@ public class Main {
     private static boolean checkForDuplicates(String column,
                                               String value) throws IOException {
         // Function to check for duplicates of the "Username and Email" column in the file-database.
-        File file = new File("C:\\Users\\valde\\IdeaProjects\\UserRegistrationProgram\\accounts.txt");
+        File file = new File("C:\\Users\\valde\\IdeaProjects" +
+                                        "\\UserRegistrationProgram\\decrypted_file_accounts.txt");
         String[] words;
         FileReader fileReader = new FileReader(file);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -316,6 +324,8 @@ public class Main {
                 }
             }
         }
+        fileReader.close();
+        bufferedReader.close();
         return false;
     }
 
@@ -354,25 +364,14 @@ public class Main {
         return String.valueOf(password);
     }
 
-    public static void emailAddressesArray() {
-        String[] testEmailAddresses = {"email@example.com", "firstname.lastname@example.com",
-                "email@subdomain.example.com", "firstname+lastname@example.com", "email@123.123.123.123",
-                "email@[123.123.123.123]", "email@example.com", "1234567890@example.com", "email@example-one.com",
-                "_______@example.com", "email@example.name", "email@example.museum", "email@example.co.jp",
-                "firstname-lastname@example.com", "#@%^%#$@#$@#.com", "@example.com", "Joe Smith <email@example.com>",
-                "email.example.com", "email@example@example.com", ".email@example.com", "email.@example.com",
-                "email..email@example.com", "あいうえお@example.com", "email@example.com (Joe Smith)",
-                "email@example,email@-example.com", "email@example.web", "email@111.222.333.44444",
-                "email@example..com", "Abc..123@example.com", "just”not”right@example.com"};
-
-        for (int i = 0; i <= testEmailAddresses.length - 1; i++) {
-            boolean send = isValid(testEmailAddresses[i]);
-            System.out.println(send+ " " + testEmailAddresses[i] );
-        }
-    }
-
-    public static String loginMenu() throws IOException {
+    public static String loginMenu() throws IOException,
+                                            NoSuchAlgorithmException,
+                                            InvalidAlgorithmParameterException,
+                                            NoSuchPaddingException,
+                                            InvalidKeySpecException,
+                                            InvalidKeyException {
         // Function use for the login menu.
+        Scanner scanner = new Scanner(System.in);
         String checkUsername = loginCheckUser();
         String checkEmail = String.valueOf(loginCheckEmail());
         String checkPassword = loginCheckPassword();
@@ -380,6 +379,7 @@ public class Main {
         boolean loginChecker = loginChecker("Email:", checkEmail,
                                             "User:", checkUsername,
                                             "Password:", checkPassword);
+
         if (!loginChecker) {
             System.out.println("No match found for this combination of credentials.");
             System.out.println("Please try again.");
@@ -388,6 +388,11 @@ public class Main {
         else {
             System.out.println("Congratulations PinkSkin");
             System.out.println("Successfully logged in.");
+            System.out.print("What would you like to do? ");
+            String nothing = scanner.nextLine();
+            System.out.println(nothing + "HA HA HA was a joke :D ");
+            String nothing1 = scanner.nextLine();
+            mainMenu();
         }
         return null;
     }
@@ -396,7 +401,8 @@ public class Main {
                                         String column1, String value1,
                                         String column2, String value2) throws IOException {
         // Function use to check in the file for user login parameters.
-        File file = new File("C:\\Users\\valde\\IdeaProjects\\UserRegistrationProgram\\accounts.txt");
+        File file = new File("C:\\Users\\valde\\IdeaProjects" +
+                                        "\\UserRegistrationProgram\\decrypted_file_accounts.txt");
         String[] words;
         FileReader fileReader = new FileReader(file);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -411,10 +417,12 @@ public class Main {
                 }
             }
         }
+        bufferedReader.close();
+        fileReader.close();
         return false;
     }
 
-    private static String loginCheckUser() throws IOException {
+    public static String loginCheckUser() throws IOException {
         // Function use to check in the file for username credentials looking for the parameter introduced exist.
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter your Username:");
@@ -438,7 +446,7 @@ public class Main {
         return null;
     }
 
-    private static String loginCheckEmail() throws IOException {
+    public static String loginCheckEmail() throws IOException {
         // Function use to check in the file for user email looking for the parameter introduced exist.
         Scanner scanner = new Scanner(System.in);
 
@@ -462,7 +470,7 @@ public class Main {
         return null;
     }
 
-    private static String loginCheckPassword() throws IOException {
+    public static String loginCheckPassword() throws IOException {
         // Function use to check in the file for user password looking for the parameter introduced exist.
         Scanner scanner = new Scanner(System.in);
 
@@ -485,42 +493,22 @@ public class Main {
         }
         return null;
     }
-/*
-    public static void encryptFile () throws NoSuchAlgorithmException, InvalidKeySpecException {
-        FileEncryption secure = new FileEncryption();
 
-        // Encrypt code
-        {
-            File encryptFile = new File("encrypt.data");
-            File publicKeyData = new File("public.der");
-            File originalFile = new File("sys_data.db");
-            File secureFile = new File("secure.data");
+    public static void emailAddressesArray() {
+        // Function created to text the function isValid "check syntax of email to get only valid ones".
+        String[] testEmailAddresses = {"email@example.com", "firstname.lastname@example.com",
+                "email@subdomain.example.com", "firstname+lastname@example.com", "email@123.123.123.123",
+                "email@[123.123.123.123]", "email@example.com", "1234567890@example.com", "email@example-one.com",
+                "_______@example.com", "email@example.name", "email@example.museum", "email@example.co.jp",
+                "firstname-lastname@example.com", "#@%^%#$@#$@#.com", "@example.com", "Joe Smith <email@example.com>",
+                "email.example.com", "email@example@example.com", ".email@example.com", "email.@example.com",
+                "email..email@example.com", "あいうえお@example.com", "email@example.com (Joe Smith)",
+                "email@example,email@-example.com", "email@example.web", "email@111.222.333.44444",
+                "email@example..com", "Abc..123@example.com", "just”not”right@example.com"};
 
-            // create AES key
-            secure.makeKey();
-
-            // save AES key using public key
-            secure.saveKey(encryptFile, publicKeyData);
-
-            // save original file securely
-            secure.encrypt(originalFile, secureFile);
-        }
-
-        // Decrypt code
-        {
-            File encryptFile = new File("encrypt.data");
-            File privateKeyFile = new File("private.der");
-            File secureFile = new File("secure.data");
-            File unencryptedFile = new File("unencryptedFile");
-
-            // load AES key
-            secure.loadKey(encryptFile, privateKeyFile);
-
-            // decrypt file
-            secure.decrypt(secureFile, unencryptedFile);
+        for (int i = 0; i <= testEmailAddresses.length - 1; i++) {
+            boolean send = isValid(testEmailAddresses[i]);
+            System.out.println(send+ " " + testEmailAddresses[i] );
         }
     }
-
- */
-
 }
