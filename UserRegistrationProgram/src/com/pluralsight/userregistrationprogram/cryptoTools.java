@@ -11,8 +11,10 @@ import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
-public class EncryptionTools {
-    // This is a Crypto class  in charge of all task required to deal with encryption and decryption.
+public class cryptoTools {
+    // This is a Crypto class use for of all the task required to deal with encryption and decryption.
+
+    public cryptoTools() { }
 
     public static SecretKey generateKey() throws NoSuchAlgorithmException {
         // Secret key generator.
@@ -26,13 +28,13 @@ public class EncryptionTools {
     }
 
     public static void encryptMode(SecretKey secretKey, int cipherMode, File input, File output)
-                                                                        throws  InvalidKeyException,
-                                                                                NoSuchAlgorithmException,
-                                                                                InvalidKeySpecException,
-                                                                                IOException,
-                                                                                NoSuchPaddingException,
-                                                                                InvalidAlgorithmParameterException {
-        // Encryption and decryption using Cipher method.
+                                                                            throws  InvalidKeyException,
+                                                                                    NoSuchAlgorithmException,
+                                                                                    InvalidKeySpecException,
+                                                                                    IOException,
+                                                                                    NoSuchPaddingException,
+                                                                                    InvalidAlgorithmParameterException {
+        // Encryption using Cipher method.
 
         FileInputStream fileInputStream = new FileInputStream(input);
         FileOutputStream fileOutputStream = new FileOutputStream(output);
@@ -42,7 +44,6 @@ public class EncryptionTools {
         byte[] ivBytes = new byte[16];
         IvParameterSpec ivParameterSpec = new IvParameterSpec(ivBytes);
 
-            // Encryption function.
         cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivParameterSpec, SecureRandom.getInstance("SHA1PRNG"));
         CipherInputStream cipherInputStream = new CipherInputStream(fileInputStream, cipher);
         writeTheFileEncryption(cipherInputStream, fileOutputStream);
@@ -54,12 +55,14 @@ public class EncryptionTools {
         myWriter.close();
     }
 
-    public static void decryptMode (SecretKey secretKey, int cipherMode, File input, File output) throws  InvalidKeyException,
-            NoSuchAlgorithmException,
-            InvalidKeySpecException,
-            IOException,
-            NoSuchPaddingException,
-            InvalidAlgorithmParameterException {
+    public static void decryptMode(SecretKey secretKey, int cipherMode, File input, File output)
+                                                                                    throws  InvalidKeyException,
+                                                                                    NoSuchAlgorithmException,
+                                                                                    InvalidKeySpecException,
+                                                                                    IOException,
+                                                                                    NoSuchPaddingException,
+                                                                                    InvalidAlgorithmParameterException {
+        // Decryption using Cipher method.
 
         FileInputStream fileInputStream = new FileInputStream(input);
         FileOutputStream fileOutputStream = new FileOutputStream(output);

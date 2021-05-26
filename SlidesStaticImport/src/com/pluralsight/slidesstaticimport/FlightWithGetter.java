@@ -1,29 +1,31 @@
 package com.pluralsight.slidesstaticimport;
 
-public class Flight {
+public class FlightWithGetter {
     int passengers;
-    int seats = 150;
+    int getSeats() {
+        return 150;
+    }
 
     private int totalCheckedBags;
 
     private int flightNumber;
     private char flightClass;
 
-    public Flight() {  }
+    public FlightWithGetter() {  }
 
-    public Flight(int flightNumber) {
+    public FlightWithGetter(int flightNumber) {
         this.flightNumber = flightNumber;
 
     }
 
-    public Flight(char flightClass) {
+    public FlightWithGetter(char flightClass) {
         this.flightClass = flightClass;
     }
 
     public void add1Passenger() {
         System.out.println("executing add1Passenger()");
 
-        if(hasSeating())
+        if (hasSeating())
             passengers += 1;
     }
 
@@ -67,12 +69,12 @@ public class Flight {
     }
 
     private boolean hasSeating() {
-        System.out.println("executing hasSeating() - seats: " + seats);
-        return passengers < seats;
+        System.out.println("executing hasSeating() - seats: " + getSeats());
+        return passengers < getSeats();
     }
 
     private boolean hasSeating(int count) {
-        return passengers + count <= seats;
+        return passengers + count <= getSeats();
     }
 
     public int getFlightNumber() {
@@ -86,16 +88,4 @@ public class Flight {
     public int getTotalCheckedBags() {
         return totalCheckedBags;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Flight))
-            return false;
-        Flight flight = (Flight) o;
-
-        return flightNumber == flight.flightNumber &&
-                flightClass == flight.flightClass;
-    }
-
 }
-

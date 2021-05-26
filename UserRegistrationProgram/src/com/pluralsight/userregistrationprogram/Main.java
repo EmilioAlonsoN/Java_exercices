@@ -39,21 +39,10 @@ public class Main {
         System.out.println("1 Make new Account\n2 Login\n3 Exit");
         String option = scanner.next();
         switch (option) {
-            case "1" -> {
-                SecretKey key = EncryptionTools.generateKey();
-                decryptFile(key);
-                NewUser.newUser();
-            }
-            case "2" -> {
-                SecretKey key = EncryptionTools.generateKey();
-                decryptFile(key);
-                LoginMenu.loginMenu();
-            }
+            case "1" -> NewUser.newUser();
+            case "2" -> LoginMenu.loginMenu();
             case "3" -> {
                 System.out.println("See you again PigSkin...............");
-                SecretKey key = EncryptionTools.generateKey();
-                encryptFile(key);
-                deleteFile();
                 System.exit(0);
             }
             default ->
@@ -62,13 +51,13 @@ public class Main {
     }
 
     public static void encryptFile(SecretKey key) throws InvalidAlgorithmParameterException {
-        // Class use to encrypt the file-database with the users data.
+        // Function use to encrypt the file-database with the users data.
         File nonEncryptedFile = new File("C:\\Users\\valde\\IdeaProjects" +
-                "\\UserRegistrationProgram\\decrypted_file_accounts.txt");
+                                                    "\\UserRegistrationProgram\\decrypted_file_accounts.txt");
         File encryptFile = new File("C:\\Users\\valde\\IdeaProjects" +
-                "\\UserRegistrationProgram\\encrypted_file_accounts.txt");
+                                                "\\UserRegistrationProgram\\encrypted_file_accounts.txt");
         try {
-            EncryptionTools.encryptMode(key, Cipher.ENCRYPT_MODE,nonEncryptedFile, encryptFile);
+            cryptoTools.encryptMode(key, Cipher.ENCRYPT_MODE,nonEncryptedFile, encryptFile);
         } catch (InvalidKeyException |
                 NoSuchAlgorithmException |
                 NoSuchPaddingException |
@@ -81,11 +70,11 @@ public class Main {
     public static void decryptFile(SecretKey key) {
         // Function use to decrypt the file-database with the users data.
         File encryptFile = new File("C:\\Users\\valde\\IdeaProjects" +
-                "\\UserRegistrationProgram\\encrypted_file_accounts.txt");
+                                                "\\UserRegistrationProgram\\encrypted_file_accounts.txt");
         File nonEncryptedFile = new File("C:\\Users\\valde\\IdeaProjects" +
-                "\\UserRegistrationProgram\\decrypted_file_accounts.txt");
+                                                    "\\UserRegistrationProgram\\decrypted_file_accounts.txt");
         try {
-            EncryptionTools.decryptMode(key, Cipher.DECRYPT_MODE,  encryptFile, nonEncryptedFile);
+            cryptoTools.decryptMode(key, Cipher.DECRYPT_MODE,  encryptFile, nonEncryptedFile);
         } catch (InvalidKeyException |
                 NoSuchAlgorithmException |
                 NoSuchPaddingException |
@@ -97,20 +86,21 @@ public class Main {
     }
 
     public static void deleteFile() throws IOException {
+        // Function use to delete the unencrypted file after is encrypted.
         File file = new File("decrypted_file_accounts.txt");
         while(file.exists()) {
             try {
                 Files.delete(Path.of("C:\\Users\\valde\\IdeaProjects" +
                                             "\\UserRegistrationProgram\\decrypted_file_accounts.txt"));
             } catch (FileSystemException var2) {
-
+                System.out.println();
             }
         }
 
     }
 
     public static boolean isValid(String email) {
-        // Function to check email syntax to avoid non valid emails.
+        // Function to check email syntax to avoid non valid emails using Regex.
         if (email == null)
             return false;
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+

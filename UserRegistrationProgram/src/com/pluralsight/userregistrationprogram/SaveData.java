@@ -3,8 +3,8 @@ package com.pluralsight.userregistrationprogram;
 import java.io.*;
 
 public class SaveData {
-
-    public SaveData(){}
+// Class use to manage all data related.
+    public SaveData() { }
 
     public static void saveData(String name,
                                  String surname,
@@ -13,7 +13,7 @@ public class SaveData {
                                  String pass) {
         // Function to write new user data to the file and terminate the program.
         try {
-            FileWriter myWriter = new FileWriter("accounts.txt", true);
+            FileWriter myWriter = new FileWriter("decrypted_file_accounts.txt", true);
 
 
             BufferedWriter bw = new BufferedWriter(myWriter);
@@ -36,7 +36,7 @@ public class SaveData {
                                               String value) throws IOException {
         // Function to check for duplicates of the "Username and Email" column in the file-database.
         File file = new File("C:\\Users\\valde\\IdeaProjects" +
-                "\\UserRegistrationProgram\\accounts.txt");
+                                        "\\UserRegistrationProgram\\decrypted_file_accounts.txt");
         String[] words;
         FileReader fileReader = new FileReader(file);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
