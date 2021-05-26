@@ -11,7 +11,7 @@ import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
-public class FileEncryption {
+public class EncryptionTools {
     // This is a Crypto class  in charge of all task required to deal with encryption and decryption.
 
     public static SecretKey generateKey() throws NoSuchAlgorithmException {
@@ -25,7 +25,7 @@ public class FileEncryption {
         return secretKey;
     }
 
-    public static void encryptDecryptFile(SecretKey secretKey, int cipherMode, File input, File output)
+    public static void encryptMode(SecretKey secretKey, int cipherMode, File input, File output)
                                                                         throws  InvalidKeyException,
                                                                                 NoSuchAlgorithmException,
                                                                                 InvalidKeySpecException,
@@ -42,29 +42,41 @@ public class FileEncryption {
         byte[] ivBytes = new byte[16];
         IvParameterSpec ivParameterSpec = new IvParameterSpec(ivBytes);
 
-        if (cipherMode == Cipher.ENCRYPT_MODE) {
             // Encryption function.
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivParameterSpec, SecureRandom.getInstance("SHA1PRNG"));
-            CipherInputStream cipherInputStream = new CipherInputStream(fileInputStream, cipher);
-            writeTheFileEncryption(cipherInputStream, fileOutputStream);
-            String encodedKey = Base64.getEncoder().encodeToString(secretKey.getEncoded());
-            FileWriter myWriter = new FileWriter("key.pub");
-            BufferedWriter bw = new BufferedWriter(myWriter);
-            bw.write(encodedKey);
-            bw.close();
-            myWriter.close();
-        }
-        else if (cipherMode == Cipher.DECRYPT_MODE) {
-            // Decryption function.
-            FileReader keyFile = new FileReader("key.pub");
-            BufferedReader bufferedReader = new BufferedReader(keyFile);
-            byte[] decodedKey = Base64.getDecoder().decode(String.valueOf(bufferedReader.readLine()));
-            SecretKey Key = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
-            cipher.init(Cipher.DECRYPT_MODE, Key, ivParameterSpec, SecureRandom.getInstance("SHA1PRNG"));
-            CipherOutputStream cipherOutputStream = new CipherOutputStream(fileOutputStream, cipher);
-            writeTheFileEncryption(fileInputStream, cipherOutputStream);
-            bufferedReader.close();
-        }
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivParameterSpec, SecureRandom.getInstance("SHA1PRNG"));
+        CipherInputStream cipherInputStream = new CipherInputStream(fileInputStream, cipher);
+        writeTheFileEncryption(cipherInputStream, fileOutputStream);
+        String encodedKey = Base64.getEncoder().encodeToString(secretKey.getEncoded());
+        FileWriter myWriter = new FileWriter("key.pub");
+        BufferedWriter bw = new BufferedWriter(myWriter);
+        bw.write(encodedKey);
+        bw.close();
+        myWriter.close();
+    }
+
+    public static void decryptMode (SecretKey secretKey, int cipherMode, File input, File output) throws  InvalidKeyException,
+            NoSuchAlgorithmException,
+            InvalidKeySpecException,
+            IOException,
+            NoSuchPaddingException,
+            InvalidAlgorithmParameterException {
+
+        FileInputStream fileInputStream = new FileInputStream(input);
+        FileOutputStream fileOutputStream = new FileOutputStream(output);
+
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+
+        byte[] ivBytes = new byte[16];
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(ivBytes);
+        FileReader keyFile = new FileReader("key.pub");
+        BufferedReader bufferedReader = new BufferedReader(keyFile);
+        byte[] decodedKey = Base64.getDecoder().decode(String.valueOf(bufferedReader.readLine()));
+        SecretKey Key = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+        cipher.init(Cipher.DECRYPT_MODE, Key, ivParameterSpec, SecureRandom.getInstance("SHA1PRNG"));
+        CipherOutputStream cipherOutputStream = new CipherOutputStream(fileOutputStream, cipher);
+        writeTheFileEncryption(fileInputStream, cipherOutputStream);
+        bufferedReader.close();
+
     }
 
     private static void writeTheFileEncryption(InputStream input, OutputStream output) throws IOException {
