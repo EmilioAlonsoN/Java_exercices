@@ -17,13 +17,13 @@ public class LoginMenu {
     public LoginMenu() { }
 
     public static void loginMenu() throws IOException,
-            NoSuchAlgorithmException,
-            InvalidAlgorithmParameterException,
-            NoSuchPaddingException,
-            InvalidKeySpecException,
-            InvalidKeyException {
+                                          NoSuchAlgorithmException,
+                                          InvalidAlgorithmParameterException,
+                                          NoSuchPaddingException,
+                                          InvalidKeySpecException,
+                                          InvalidKeyException {
         // Function use for the login menu.
-        SecretKey key = EncryptionTools.generateKey();
+        SecretKey key = cryptoTools.generateKey();
         Main.decryptFile(key);
 
         Scanner scanner = new Scanner(System.in);

@@ -57,7 +57,7 @@ public class Main {
         File encryptFile = new File("C:\\Users\\valde\\IdeaProjects" +
                                                 "\\UserRegistrationProgram\\encrypted_file_accounts.txt");
         try {
-            EncryptionTools.encryptMode(key, Cipher.ENCRYPT_MODE,nonEncryptedFile, encryptFile);
+            cryptoTools.encryptMode(key, Cipher.ENCRYPT_MODE,nonEncryptedFile, encryptFile);
         } catch (InvalidKeyException |
                 NoSuchAlgorithmException |
                 NoSuchPaddingException |
@@ -74,7 +74,7 @@ public class Main {
         File nonEncryptedFile = new File("C:\\Users\\valde\\IdeaProjects" +
                                                     "\\UserRegistrationProgram\\decrypted_file_accounts.txt");
         try {
-            EncryptionTools.decryptMode(key, Cipher.DECRYPT_MODE,  encryptFile, nonEncryptedFile);
+            cryptoTools.decryptMode(key, Cipher.DECRYPT_MODE,  encryptFile, nonEncryptedFile);
         } catch (InvalidKeyException |
                 NoSuchAlgorithmException |
                 NoSuchPaddingException |

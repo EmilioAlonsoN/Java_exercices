@@ -11,11 +11,10 @@ import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
-public class EncryptionTools {
-
-    public EncryptionTools() { }
-
+public class cryptoTools {
     // This is a Crypto class use for of all the task required to deal with encryption and decryption.
+
+    public cryptoTools() { }
 
     public static SecretKey generateKey() throws NoSuchAlgorithmException {
         // Secret key generator.
@@ -35,7 +34,7 @@ public class EncryptionTools {
                                                                                     IOException,
                                                                                     NoSuchPaddingException,
                                                                                     InvalidAlgorithmParameterException {
-            // Encryption using Cipher method.
+        // Encryption using Cipher method.
 
         FileInputStream fileInputStream = new FileInputStream(input);
         FileOutputStream fileOutputStream = new FileOutputStream(output);
@@ -56,14 +55,13 @@ public class EncryptionTools {
         myWriter.close();
     }
 
-    public static void decryptMode (SecretKey secretKey, int cipherMode, File input, File output)
+    public static void decryptMode(SecretKey secretKey, int cipherMode, File input, File output)
                                                                                     throws  InvalidKeyException,
                                                                                     NoSuchAlgorithmException,
                                                                                     InvalidKeySpecException,
                                                                                     IOException,
                                                                                     NoSuchPaddingException,
                                                                                     InvalidAlgorithmParameterException {
-
         // Decryption using Cipher method.
 
         FileInputStream fileInputStream = new FileInputStream(input);
