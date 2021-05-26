@@ -1,6 +1,7 @@
 package com.pluralsight.userregistrationprogram;
 
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -10,6 +11,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class NewUser {
+    // Class use to created a new user.
     public NewUser() {}
 
     public static void newUser()throws IOException,
@@ -17,7 +19,9 @@ public class NewUser {
             NoSuchAlgorithmException,
             InvalidKeySpecException,
             InvalidKeyException, InvalidAlgorithmParameterException {
-        // Function to make a new user.
+        SecretKey key = EncryptionTools.generateKey();
+        Main.decryptFile(key);
+
         System.out.println("Registration App");
         System.out.println("App test ");
 
@@ -30,6 +34,9 @@ public class NewUser {
 
         String username = userName();
         passwordOptions(name, surname, email, username);
+
+        Main.encryptFile(key);
+        Main.deleteFile();
 
         Main.mainMenu();
     }

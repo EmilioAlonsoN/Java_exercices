@@ -1,6 +1,7 @@
 package com.pluralsight.userregistrationprogram;
 
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -12,7 +13,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.Scanner;
 
 public class LoginMenu {
-
+// Class use to login in.
     public LoginMenu(){}
 
     public static void loginMenu() throws IOException,
@@ -22,6 +23,9 @@ public class LoginMenu {
             InvalidKeySpecException,
             InvalidKeyException {
         // Function use for the login menu.
+        SecretKey key = EncryptionTools.generateKey();
+        Main.decryptFile(key);
+
         Scanner scanner = new Scanner(System.in);
         String checkUsername = loginCheckUser();
         String checkEmail = String.valueOf(loginCheckEmail());
@@ -42,6 +46,8 @@ public class LoginMenu {
             System.out.print("What would you like to do? ");
             String nothing = scanner.nextLine();
             System.out.println(nothing + "HA HA HA was a joke :D ");
+            Main.encryptFile(key);
+            Main.deleteFile();
             Main.mainMenu();
         }
     }
@@ -51,7 +57,7 @@ public class LoginMenu {
                                         String column2, String value2) throws IOException {
         // Function use to check in the file for user login parameters.
         File file = new File("C:\\Users\\valde\\IdeaProjects" +
-                "\\UserRegistrationProgram\\decrypted_file_accounts.txt");
+                                        "\\UserRegistrationProgram\\decrypted_file_accounts.txt");
         String[] words;
         FileReader fileReader = new FileReader(file);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
