@@ -12,6 +12,9 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
 public class EncryptionTools {
+
+    public EncryptionTools() { }
+
     // This is a Crypto class use for of all the task required to deal with encryption and decryption.
 
     public static SecretKey generateKey() throws NoSuchAlgorithmException {

@@ -4,7 +4,7 @@ import java.io.*;
 
 public class SaveData {
 // Class use to manage all data related.
-    public SaveData(){}
+    public SaveData() { }
 
     public static void saveData(String name,
                                  String surname,

@@ -93,7 +93,7 @@ public class Main {
                 Files.delete(Path.of("C:\\Users\\valde\\IdeaProjects" +
                                             "\\UserRegistrationProgram\\decrypted_file_accounts.txt"));
             } catch (FileSystemException var2) {
-
+                System.out.println();
             }
         }
 

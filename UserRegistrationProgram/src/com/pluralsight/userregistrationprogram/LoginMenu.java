@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 public class LoginMenu {
 // Class use to login in.
-    public LoginMenu(){}
+    public LoginMenu() { }
 
     public static void loginMenu() throws IOException,
             NoSuchAlgorithmException,

@@ -48,7 +48,7 @@ public class NewUser {
         System.out.print("Name: ");
         String name = scanner.nextLine();
 
-        System.out.println("Is this you name: " + name + " " + "Press y to confirm else try again.");
+        System.out.println("Is this you name: " + "\"" + name + "\"" + " " + "Press \" y \" to confirm else try again.");
         String confirmation = scanner.nextLine();
 
         if (!confirmation.equals("y")) {
@@ -64,7 +64,7 @@ public class NewUser {
         System.out.print("Surname: ");
         String surname = scanner.nextLine();
 
-        System.out.println("Is this you name: " + surname + " " + "Press y to confirm else try again.");
+        System.out.println("Is this you name: " + "\"" + surname + "\"" + " " + "Press \" y \" to confirm else try again.");
         String confirmation = scanner.nextLine();
 
         if (!confirmation.equals("y")) {
@@ -117,8 +117,8 @@ public class NewUser {
                 return userName();
             }
             else {
-                System.out.println("Is this your Username:" + " " + username +
-                        " " + "Press y to confirm else try again.");
+                System.out.println("Is this your Username:" + " " + "\"" + username + "\"" +
+                        " " + "Press \" y \" to confirm else try again.");
                 String confirmation = scanner1.nextLine();
                 if (!confirmation.equals("y")) {
                     return userName();
