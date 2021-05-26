@@ -4,6 +4,25 @@ public class Main {
 
     public static void main(String[] args) {
         performCalculations();
+        Divider divider = new Divider();
+        doCalculation(divider, 100.0d, 50.0d);
+
+        Adder adder = new Adder();
+        doCalculation(adder, 25.0d, 92.0d);
+
+        Subtracter subtracter = new Subtracter();
+        doCalculation(subtracter, 225.0d, 17.0d);
+
+        Multiplier multiplier = new Multiplier();
+        doCalculation(multiplier, 11.0d, 3.0d);
+    }
+
+    static void doCalculation(CalculateBase calculation, double lefVal, double rightVal) {
+        calculation.setLeftVal(lefVal);
+        calculation.setRightVal(rightVal);
+        calculation.calculate();
+        System.out.println("Calculation result = " + calculation.getResult());
+
     }
 
     static void performCalculations() {
@@ -15,9 +34,9 @@ public class Main {
 
         for(MathEquation equation : equations){
             equation.execute();
-            System.out.println("Result = " + equation.result);
+            System.out.println("Result = " + equation.getResult());
         }
-        System.out.println("Average result = " + MathEquation.getSumOfResults());
+        System.out.println("Average result = " + MathEquation.getAverageResult());
 
         System.out.println();
         System.out.println("Using execute overloads");
@@ -35,4 +54,6 @@ public class Main {
         equationOverload.execute(leftInt, rightInt);
         System.out.println("Overloaded result with integers: " + equationOverload.getResult());
     }
+
+
 }
