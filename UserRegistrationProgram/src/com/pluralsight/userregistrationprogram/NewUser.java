@@ -48,7 +48,7 @@ public class NewUser {
         System.out.print("Name: ");
         String name = scanner.nextLine();
 
-        System.out.println("Is this you name: " + "\"" + name + "\"" + " " + "Press \" y \" to confirm else try again.");
+        System.out.println("Is this you name? " + "\"" + name + "\"" + " " + "Press \" y \" to confirm else try again.");
         String confirmation = scanner.nextLine();
 
         if (!confirmation.equals("y")) {
@@ -64,7 +64,7 @@ public class NewUser {
         System.out.print("Surname: ");
         String surname = scanner.nextLine();
 
-        System.out.println("Is this you name: " + "\"" + surname + "\"" + " " + "Press \" y \" to confirm else try again.");
+        System.out.println("Is this you name? " + "\"" + surname + "\"" + " " + "Press \" y \" to confirm else try again.");
         String confirmation = scanner.nextLine();
 
         if (!confirmation.equals("y")) {
@@ -86,7 +86,7 @@ public class NewUser {
             eMail();
         }
         else if (Main.isValid(email)) {
-            boolean hasDuplicate = SaveData.checkForDuplicates("Email:", email);
+            boolean hasDuplicate = dataClass.checkForDuplicates("Email:", email);
             if (hasDuplicate) {
                 System.out.println("Email already exists.");
                 eMail();
@@ -110,14 +110,14 @@ public class NewUser {
             return userName();
         }
         else if (!username.contains(" ")) {
-            boolean hasDuplicate = SaveData.checkForDuplicates("User:", username);
+            boolean hasDuplicate = dataClass.checkForDuplicates("User:", username);
             if (hasDuplicate) {
                 System.out.println("Already exists.");
                 System.out.println("Please choose another one.");
                 return userName();
             }
             else {
-                System.out.println("Is this your Username:" + " " + "\"" + username + "\"" +
+                System.out.println("Is this your Username?" + " " + "\"" + username + "\"" +
                         " " + "Press \" y \" to confirm else try again.");
                 String confirmation = scanner1.nextLine();
                 if (!confirmation.equals("y")) {
@@ -146,11 +146,11 @@ public class NewUser {
         switch (option) {
             case "1" -> {
                 String pass = passwordGenerator();
-                SaveData.saveData (name, surname, email, username, pass);
+                dataClass.saveData (name, surname, email, username, pass);
             }
             case "2" -> {
                 String pass = selfChoosePassword();
-                SaveData.saveData (name, surname, email, username, pass);
+                dataClass.saveData (name, surname, email, username, pass);
             }
             case "3" -> Main.mainMenu();
             default ->

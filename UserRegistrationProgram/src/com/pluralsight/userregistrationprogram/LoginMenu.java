@@ -30,10 +30,10 @@ public class LoginMenu {
         String checkUsername = loginCheckUser();
         String checkEmail = String.valueOf(loginCheckEmail());
         String checkPassword = loginCheckPassword();
-        //loginChecker(checkUsername, checkEmail,checkPassword);
+
         boolean loginChecker = loginChecker("Email:", checkEmail,
-                "User:", checkUsername,
-                "Password:", checkPassword);
+                                            "User:", checkUsername,
+                                            "Password:", checkPassword);
 
         if (!loginChecker) {
             System.out.println("No match found for this combination of credentials.");
@@ -80,6 +80,7 @@ public class LoginMenu {
     private static String loginCheckUser() throws IOException {
         // Function use to check in the file for username credentials looking for the parameter introduced exist.
         Scanner scanner = new Scanner(System.in);
+
         System.out.println("Please enter your Username:");
         System.out.print("Username: ");
         String username = scanner.nextLine();
@@ -89,7 +90,7 @@ public class LoginMenu {
             return loginCheckUser();
         }
         else {
-            boolean hasDuplicate = SaveData.checkForDuplicates("User:", username);
+            boolean hasDuplicate = dataClass.checkForDuplicates("User:", username);
 
             if (!hasDuplicate) {
                 loginCheckUser();
@@ -114,7 +115,7 @@ public class LoginMenu {
             return loginCheckEmail();
         }
         else {
-            boolean hasDuplicate = SaveData.checkForDuplicates("Email:", email);
+            boolean hasDuplicate = dataClass.checkForDuplicates("Email:", email);
             if (!hasDuplicate) {
                 loginCheckEmail();
             }
@@ -138,7 +139,7 @@ public class LoginMenu {
             return loginCheckPassword();
         }
         else {
-            boolean hasDuplicate = SaveData.checkForDuplicates("Password:", pass);
+            boolean hasDuplicate = dataClass.checkForDuplicates("Password:", pass);
             if (!hasDuplicate) {
                 loginCheckPassword();
             }

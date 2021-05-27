@@ -2,9 +2,9 @@ package com.pluralsight.userregistrationprogram;
 
 import java.io.*;
 
-public class SaveData {
+public class dataClass {
 // Class use to manage all data related.
-    public SaveData() { }
+    public dataClass() { }
 
     public static void saveData(String name,
                                  String surname,

@@ -1,6 +1,6 @@
 package com.pluralsight.slidesstaticimport;
 
-public class Passenger {
+final public class Passenger {
     private int checkedBags;
     private int freeBags;
     private double perBagFee;

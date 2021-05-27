@@ -75,6 +75,22 @@ public class Flight {
         return passengers + count <= seats;
     }
 
+    public int getPassengers() {
+        return passengers;
+    }
+
+    public void setPassengers(int passengers) {
+        this.passengers = passengers;
+    }
+
+    public int getSeats() {
+        return seats;
+    }
+
+    public void setSeats(int seats) {
+        this.seats = seats;
+    }
+
     public int getFlightNumber() {
         return flightNumber;
     }
@@ -89,13 +105,21 @@ public class Flight {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Flight))
-            return false;
-        Flight flight = (Flight) o;
+        System.out.println("executing Flight.equals(Object o)");
+
+        if(super.equals(o)) {
+        System.out.println("Both references point to the same Flight instance)");
+        return true;
+    }
+        if (!(o instanceof Flight)) {
+        System.out.println("Object being compared is NOT a Flight");
+        return false;
+    }
+    Flight flight = (Flight) o;
 
         return flightNumber == flight.flightNumber &&
                 flightClass == flight.flightClass;
-    }
+}
 
 }
 

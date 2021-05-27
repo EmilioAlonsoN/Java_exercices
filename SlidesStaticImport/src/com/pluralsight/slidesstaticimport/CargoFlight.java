@@ -1,11 +1,32 @@
 package com.pluralsight.slidesstaticimport;
 
-public class CargoFlight extends Flight{
+public class CargoFlight extends Flight {
     float maxCargoSpace = 1000.0f;
     float usedCargoSpace;
     int seats = 12;
 
-    public void add1Package(float h, float w, float d){
+    public CargoFlight(int flightNumber) {
+        super(flightNumber);
+        System.out.println("executing CargoFlight(int flightNumber)");
+    }
+
+    public CargoFlight(int flightNumber, float maxCargoSpace) {
+//        super(flightNumber);
+        this(flightNumber);
+        this.maxCargoSpace = maxCargoSpace;
+        System.out.println("executing CargoFlight(int flightNumber, float maxCargoSpace)");
+    }
+
+    public CargoFlight() {
+        System.out.println("executing CargoFlight()");
+    }
+
+    public CargoFlight(float maxCargoSpace) {
+        this.maxCargoSpace = maxCargoSpace;
+        System.out.println("executing CargoFlight(float maxCargoSpace)");
+    }
+
+    public final void add1Package(float h, float w, float d) {
         System.out.println("executing add1Package()");
         float size = h * w * d;
         if(hasCargoSpace(size))
@@ -13,10 +34,10 @@ public class CargoFlight extends Flight{
         else
             handleNoSpace();
     }
-    private boolean hasCargoSpace(float size){
+    private boolean hasCargoSpace(float size) {
         return usedCargoSpace + size <= maxCargoSpace;
     }
-    private void handleNoSpace(){
+    private void handleNoSpace() {
         System.out.println("Not enough space.");
     }
 }
