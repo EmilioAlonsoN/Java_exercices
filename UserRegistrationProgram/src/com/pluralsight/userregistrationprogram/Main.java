@@ -27,7 +27,7 @@ public class Main {
         mainMenu();
     }
 
-    public static void mainMenu()throws  IOException,
+    public static void mainMenu() throws IOException,
                                          NoSuchPaddingException,
                                          NoSuchAlgorithmException,
                                          InvalidKeySpecException,
@@ -101,8 +101,9 @@ public class Main {
 
     public static boolean isValid(String email) {
         // Function to check email syntax to avoid non valid emails using Regex.
-        if (email == null)
+        if (email == null) {
             return false;
+        }
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
                 "[a-zA-Z0-9_+&*-]+)*@" +
                 "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
