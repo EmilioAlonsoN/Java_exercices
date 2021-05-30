@@ -10,30 +10,25 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class LoginMenu {
 // Class use to login in.
     public LoginMenu() { }
 
-    public static void loginMenu() throws IOException,
-                                          NoSuchAlgorithmException,
-                                          InvalidAlgorithmParameterException,
-                                          NoSuchPaddingException,
-                                          InvalidKeySpecException,
-                                          InvalidKeyException {
+    public static void loginMenu() throws IOException, NoSuchAlgorithmException, InvalidAlgorithmParameterException,
+            NoSuchPaddingException, InvalidKeySpecException, InvalidKeyException, SQLException {
         // Function use for the login menu.
-        SecretKey key = cryptoTools.generateKey();
-        Main.decryptFile(key);
+        SecretKey key = CryptoTools.generateKey();
+        Main.decryptFile();
 
         Scanner scanner = new Scanner(System.in);
         String checkUsername = loginCheckUser();
         String checkEmail = String.valueOf(loginCheckEmail());
         String checkPassword = loginCheckPassword();
 
-        boolean loginChecker = loginChecker("Email:", checkEmail,
-                                            "User:", checkUsername,
-                                            "Password:", checkPassword);
+        boolean loginChecker = loginChecker(checkEmail, checkUsername, checkPassword);
 
         if (!loginChecker) {
             System.out.println("No match found for this combination of credentials.");
@@ -47,14 +42,12 @@ public class LoginMenu {
             String nothing = scanner.nextLine();
             System.out.println(nothing + "HA HA HA was a joke :D ");
             Main.encryptFile(key);
-            Main.deleteFile();
+            //Main.deleteFile();
             Main.mainMenu();
         }
     }
 
-    private static boolean loginChecker(String column, String value,
-                                        String column1, String value1,
-                                        String column2, String value2) throws IOException {
+    private static boolean loginChecker(String value, String value1, String value2) throws IOException {
         // Function use to check in the file for user login parameters.
         File file = new File("C:\\Users\\valde\\IdeaProjects" +
                                         "\\UserRegistrationProgram\\decrypted_file_accounts.txt");
@@ -62,7 +55,7 @@ public class LoginMenu {
         FileReader fileReader = new FileReader(file);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         String string;
-        String input = column + value + column1 + value1 + column2 + value2;
+        String input = "Email:" + value + "User:" + value1 + "Password:" + value2;
 
         while ((string = bufferedReader.readLine()) != null) {
             words = string.split(" ");
@@ -90,7 +83,7 @@ public class LoginMenu {
             return loginCheckUser();
         }
         else {
-            boolean hasDuplicate = dataClass.checkForDuplicates("User:", username);
+            boolean hasDuplicate = DataClass.checkForDuplicates("User:", username);
 
             if (!hasDuplicate) {
                 loginCheckUser();
@@ -110,12 +103,12 @@ public class LoginMenu {
         System.out.println("Email: ");
         String email = scanner.nextLine();
 
-        if (!Main.isValid(email)) {
+        if (!DataClass.isValid(email)) {
             System.out.println("Invalid Email.");
             return loginCheckEmail();
         }
         else {
-            boolean hasDuplicate = dataClass.checkForDuplicates("Email:", email);
+            boolean hasDuplicate = DataClass.checkForDuplicates("Email:", email);
             if (!hasDuplicate) {
                 loginCheckEmail();
             }
@@ -139,7 +132,7 @@ public class LoginMenu {
             return loginCheckPassword();
         }
         else {
-            boolean hasDuplicate = dataClass.checkForDuplicates("Password:", pass);
+            boolean hasDuplicate = DataClass.checkForDuplicates("Password:", pass);
             if (!hasDuplicate) {
                 loginCheckPassword();
             }
