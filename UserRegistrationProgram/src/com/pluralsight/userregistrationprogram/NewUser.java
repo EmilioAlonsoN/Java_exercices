@@ -7,20 +7,19 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Random;
 import java.util.Scanner;
 
 public class NewUser {
     // Class use to created a new user.
-    public NewUser() {}
+    public NewUser() { }
 
-    public static void newUser() throws IOException,
-                                        NoSuchPaddingException,
-                                        NoSuchAlgorithmException,
-                                        InvalidKeySpecException,
-                                        InvalidKeyException, InvalidAlgorithmParameterException {
-        SecretKey key = cryptoTools.generateKey();
-        Main.decryptFile(key);
+    public static void newUser() throws IOException, NoSuchPaddingException, NoSuchAlgorithmException,
+            InvalidKeySpecException, InvalidKeyException, InvalidAlgorithmParameterException, SQLException {
+        SecretKey key = CryptoTools.generateKey();
+        Main.decryptFile();
 
         System.out.println("Registration App");
         System.out.println("App test ");
@@ -33,15 +32,19 @@ public class NewUser {
         System.out.println("Choose your Username.");
 
         String username = userName();
-        passwordOptions(name, surname, email, username);
+        String pass = passwordOptions();
+
+        DataClass.saveData (name, surname, email, username, pass); //Save data into a file.
+
+        Connection conn = DatabaseClass.getConnection();
+        DatabaseClass.saveUser(conn, name, surname, email, username, pass); // Save data into database.
 
         Main.encryptFile(key);
-        Main.deleteFile();
 
         Main.mainMenu();
     }
 
-    private static String nameRegs() {
+    static String nameRegs() {
         // Function to input a name.
         Scanner scanner = new Scanner(System.in);
 
@@ -57,7 +60,7 @@ public class NewUser {
         return name;
     }
 
-    private static String surnameRegs() {
+    static String surnameRegs() {
         // Function to input surname.
         Scanner scanner = new Scanner(System.in);
 
@@ -73,7 +76,7 @@ public class NewUser {
         return surname;
     }
 
-    private static String eMail() throws IOException {
+    static String eMail() throws IOException {
         // Function for manual email input. Will check that it is a valid email, and compare it to the file to avoid
         // duplicate emails.
         Scanner scanner = new Scanner(System.in);
@@ -81,12 +84,12 @@ public class NewUser {
         System.out.print("Please enter your email:");
         String email = scanner.nextLine();
 
-        if (!Main.isValid(email)) {
+        if (!DataClass.isValid(email)) {
             System.out.println("Invalid Email.");
             eMail();
         }
-        else if (Main.isValid(email)) {
-            boolean hasDuplicate = dataClass.checkForDuplicates("Email:", email);
+        else {
+            boolean hasDuplicate = DataClass.checkForDuplicates("Email:", email);
             if (hasDuplicate) {
                 System.out.println("Email already exists.");
                 eMail();
@@ -94,10 +97,10 @@ public class NewUser {
             else
                 return email;
         }
-        return null;
+        return email;
     }
 
-    private static String userName() throws IOException {
+    static String userName() throws IOException {
         // Function to input a username. Will compare it to the file to avoid duplicate usernames.
         Scanner scanner = new Scanner(System.in);
         Scanner scanner1 = new Scanner(System.in);
@@ -110,7 +113,7 @@ public class NewUser {
             return userName();
         }
         else if (!username.contains(" ")) {
-            boolean hasDuplicate = dataClass.checkForDuplicates("User:", username);
+            boolean hasDuplicate = DataClass.checkForDuplicates("User:", username);
             if (hasDuplicate) {
                 System.out.println("Already exists.");
                 System.out.println("Please choose another one.");
@@ -128,15 +131,8 @@ public class NewUser {
         return username;
     }
 
-    private static void passwordOptions(String name,
-                                        String surname,
-                                        String email,
-                                        String username) throws InvalidAlgorithmParameterException,
-                                                                                            NoSuchPaddingException,
-                                                                                            IOException,
-                                                                                            NoSuchAlgorithmException,
-                                                                                            InvalidKeySpecException,
-                                                                                            InvalidKeyException {
+    private static String passwordOptions() throws InvalidAlgorithmParameterException, NoSuchPaddingException,
+            IOException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, SQLException {
         // Function to choose a method to create a password "self chosen or autogenerated".
         Scanner scanner = new Scanner(System.in);
 
@@ -145,20 +141,21 @@ public class NewUser {
 
         switch (option) {
             case "1" -> {
-                String pass = passwordGenerator();
-                dataClass.saveData (name, surname, email, username, pass);
+                return passwordGenerator();
             }
             case "2" -> {
-                String pass = selfChoosePassword();
-                dataClass.saveData (name, surname, email, username, pass);
+                return selfChoosePassword();
             }
-            case "3" -> Main.mainMenu();
-            default ->
-                    passwordOptions(name, surname, email, username);
+            case "3" ->
+                    Main.mainMenu();
+            default -> {
+                return passwordOptions();
+            }
         }
+        return null;
     }
 
-    private static String selfChoosePassword() {
+    static String selfChoosePassword() {
         // Function used to obtain a self chosen password from the user.
         Scanner scanner = new Scanner(System.in);
 
@@ -195,7 +192,7 @@ public class NewUser {
         return password;
     }
 
-    private static String passwordGenerator() {
+    static String passwordGenerator() {
         // Function to autogenerated a new password.
         String capitalCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String lowerCaseLetters = "abcdefghijklmnopqrstuvwxyz";
