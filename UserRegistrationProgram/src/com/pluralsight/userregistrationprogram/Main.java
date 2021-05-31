@@ -8,6 +8,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -15,7 +16,21 @@ public class Main {
 
     public static void main(String[] args) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException,
             InvalidKeySpecException, InvalidKeyException, InvalidAlgorithmParameterException, SQLException {
-        mainMenu();
+        String username = NewUser.userName();
+        Connection conn = DatabaseClass.getConnection();
+        boolean db = DatabaseClass.checkForDuplicatesDB(conn, username);
+        if (db) {
+            System.out.println("Already exists.");
+            System.out.println("Please choose another one.");
+            return;
+        }
+        else {
+            System.out.println("Is this your Username?" + " " + "\"" + username + "\"" +
+                    " " + "Press \" y \" to confirm else try again.");
+        }
+
+
+        //mainMenu();
     }
 
     public static void mainMenu() throws IOException, NoSuchPaddingException, NoSuchAlgorithmException,

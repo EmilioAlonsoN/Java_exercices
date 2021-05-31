@@ -85,6 +85,20 @@ public class DatabaseClass {
         statement.close();
     }
 
+    public static boolean checkForDuplicatesDB(Connection conn, String username) throws SQLException {
+        try {
+        PreparedStatement statement = conn.prepareStatement("SELECT username FROM users WHERE NOT EXISTS");
+        statement.setString(1, username);
+        statement.executeUpdate();
+        statement.close();
+        return true;
+        }
+        catch (PSQLException e){
+            System.out.println("Username already exists.");
+            return false;
+        }
+    }
+
     public static void printResults(ResultSet resultSet) throws SQLException {
 
         ResultSetMetaData resultSetMetaData = resultSet.getMetaData();

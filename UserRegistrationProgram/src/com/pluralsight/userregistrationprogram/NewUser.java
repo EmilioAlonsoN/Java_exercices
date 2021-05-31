@@ -100,7 +100,7 @@ public class NewUser {
         return email;
     }
 
-    static String userName() throws IOException {
+    static String userName() throws IOException, SQLException {
         // Function to input a username. Will compare it to the file to avoid duplicate usernames.
         Scanner scanner = new Scanner(System.in);
         Scanner scanner1 = new Scanner(System.in);
