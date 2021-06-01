@@ -16,24 +16,10 @@ public class Main {
 
     public static void main(String[] args) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException,
             InvalidKeySpecException, InvalidKeyException, InvalidAlgorithmParameterException, SQLException {
-        String username = NewUser.userName();
         Connection conn = DatabaseClass.getConnection();
-        boolean db = DatabaseClass.checkForDuplicatesDB(conn, username);
-        if (db) {
-            System.out.println("Already exists.");
-            System.out.println("Please choose another one.");
-            return;
-        }
-        else {
-            System.out.println("Is this your Username?" + " " + "\"" + username + "\"" +
-                    " " + "Press \" y \" to confirm else try again.");
-        }
-
-
-        //mainMenu();
+        mainMenu(conn);
     }
-
-    public static void mainMenu() throws IOException, NoSuchPaddingException, NoSuchAlgorithmException,
+    public static void mainMenu(Connection conn) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException,
             InvalidKeySpecException, InvalidKeyException, InvalidAlgorithmParameterException, SQLException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to my App.");
@@ -42,20 +28,22 @@ public class Main {
         System.out.println("1 Make new Account\n2 Login\n3 Exit");
         String option = scanner.next();
         switch (option) {
-            case "1" -> NewUser.newUser();
-            case "2" -> LoginMenu.loginMenu();
+            case "1" -> NewUser.newUser(conn);
+            case "2" -> LoginMenu.loginMenu(conn);
             case "3" -> {
                 DataClass.deleteFile();
                 System.out.println("See you again PigSkin...............");
                 System.exit(0);
             }
             default ->
-                    mainMenu();
+                    mainMenu(conn);
         }
     }
 
+    /**
+     * Function use to encrypt the file-database with the users data.
+     */
     public static void encryptFile(SecretKey key) throws InvalidAlgorithmParameterException {
-        // Function use to encrypt the file-database with the users data.
 
         try {
             CryptoTools.encryptMode(key);
@@ -65,8 +53,10 @@ public class Main {
         }
     }
 
+    /**
+     * Function use to decrypt the file-database with the users data.
+     */
     public static void decryptFile() {
-        // Function use to decrypt the file-database with the users data.
 
         try {
             CryptoTools.decryptMode();

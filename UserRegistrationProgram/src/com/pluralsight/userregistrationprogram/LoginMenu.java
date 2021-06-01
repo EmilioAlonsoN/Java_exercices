@@ -10,16 +10,20 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+/**
+ * Class use to login in.
+ */
 public class LoginMenu {
-// Class use to login in.
+
     public LoginMenu() { }
 
-    public static void loginMenu() throws IOException, NoSuchAlgorithmException, InvalidAlgorithmParameterException,
+    public static void loginMenu(Connection conn) throws IOException, NoSuchAlgorithmException, InvalidAlgorithmParameterException,
             NoSuchPaddingException, InvalidKeySpecException, InvalidKeyException, SQLException {
-        // Function use for the login menu.
+
         SecretKey key = CryptoTools.generateKey();
         Main.decryptFile();
 
@@ -33,7 +37,7 @@ public class LoginMenu {
         if (!loginChecker) {
             System.out.println("No match found for this combination of credentials.");
             System.out.println("Please try again.");
-            loginMenu();
+            loginMenu(conn);
         }
         else {
             System.out.println("Congratulations PinkSkin");
@@ -43,12 +47,15 @@ public class LoginMenu {
             System.out.println(nothing + "HA HA HA was a joke :D ");
             Main.encryptFile(key);
             //Main.deleteFile();
-            Main.mainMenu();
+            Main.mainMenu(conn);
         }
     }
 
+    /**
+     * Function use to check in the file for user login parameters.
+     */
     private static boolean loginChecker(String value, String value1, String value2) throws IOException {
-        // Function use to check in the file for user login parameters.
+
         File file = new File("C:\\Users\\valde\\IdeaProjects" +
                                         "\\UserRegistrationProgram\\decrypted_file_accounts.txt");
         String[] words;
@@ -70,8 +77,11 @@ public class LoginMenu {
         return false;
     }
 
+    /**
+     * Function use to check in the file for username credentials looking for the parameter introduced exist.
+     */
     private static String loginCheckUser() throws IOException {
-        // Function use to check in the file for username credentials looking for the parameter introduced exist.
+
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Please enter your Username:");
@@ -95,8 +105,11 @@ public class LoginMenu {
         return null;
     }
 
+    /**
+     * Function use to check in the file for user email looking for the parameter introduced exist.
+     */
     private static String loginCheckEmail() throws IOException {
-        // Function use to check in the file for user email looking for the parameter introduced exist.
+
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Please enter your email:");
@@ -119,8 +132,11 @@ public class LoginMenu {
         return null;
     }
 
+    /**
+     * Function use to check in the file for user password looking for the parameter introduced exist.
+     */
     private static String loginCheckPassword() throws IOException {
-        // Function use to check in the file for user password looking for the parameter introduced exist.
+
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Please introduced your password:");

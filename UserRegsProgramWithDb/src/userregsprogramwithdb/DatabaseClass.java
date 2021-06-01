@@ -1,4 +1,4 @@
-package com.pluralsight.userregistrationprogram;
+package userregsprogramwithdb;
 
 import org.postgresql.util.PSQLException;
 
@@ -6,7 +6,6 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class DatabaseClass {
-
     public DatabaseClass() { }
 
     private final String url = "jdbc:postgresql://localhost:5432/urp";
@@ -67,13 +66,13 @@ public class DatabaseClass {
     }
 
     public static void saveUser(Connection conn, String name, String surname, String email,
-                                                 String username, String password) throws SQLException {
+                                String username, String password) throws SQLException {
         //Returns true if data has been saved successfully, else false
 
 
         PreparedStatement statement = conn.prepareStatement("INSERT INTO users " +
-                                                                "(name, surname, email, username, password)" +
-                                                                " VALUES (?, ?, ?, ?, ?)");
+                "(name, surname, email, username, password)" +
+                " VALUES (?, ?, ?, ?, ?)");
         statement.setString(1, name);
         statement.setString(2, surname);
         statement.setString(3, email);
@@ -89,8 +88,8 @@ public class DatabaseClass {
         Statement statement = conn.createStatement();
 
         String query = String.format("select username\n" +
-                                            "from users\n" +
-                                            "WHERE username = '%s' ;", inputUsername);
+                "from users\n" +
+                "WHERE username = '%s' ;", inputUsername);
 
         ResultSet resultset = statement.executeQuery(query);
 
@@ -141,4 +140,3 @@ public class DatabaseClass {
         return allRows;
     }
 }
-

@@ -6,12 +6,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.regex.Pattern;
 
+/**
+ * Class use to manage all data related.
+ */
 public class DataClass {
-// Class use to manage all data related.
+
     public DataClass() { }
 
+    /**
+     * Function to write new user data to the file and terminate the program.
+     */
     public static void saveData(String name, String surname, String email, String username, String pass) {
-        // Function to write new user data to the file and terminate the program.
+
         try {
             FileWriter myWriter = new FileWriter("decrypted_file_accounts.txt", true);
 
@@ -32,8 +38,11 @@ public class DataClass {
         }
     }
 
+    /**
+     * Function to check for duplicates of the "Username and Email" column in the file-database.
+     */
     public static boolean checkForDuplicates(String column, String value) throws IOException {
-        // Function to check for duplicates of the "Username and Email" column in the file-database.
+
         File file = new File("C:\\Users\\valde\\IdeaProjects" +
                                         "\\UserRegistrationProgram\\decrypted_file_accounts.txt");
         String[] words;
@@ -55,8 +64,11 @@ public class DataClass {
         return false;
     }
 
+    /**
+     * Function use to delete the unencrypted file after is encrypted.
+     */
     public static void deleteFile() throws IOException {
-        // Function use to delete the unencrypted file after is encrypted.
+
         File file = new File("decrypted_file_accounts.txt");
         while(file.exists()) {
             try {
@@ -68,8 +80,11 @@ public class DataClass {
         }
     }
 
+    /**
+     * Function to check email syntax to avoid non valid emails using Regex.
+     */
     public static boolean isValid(String email) {
-        // Function to check email syntax to avoid non valid emails using Regex.
+
         if (email == null) {
             return false;
         }
@@ -82,8 +97,11 @@ public class DataClass {
         return pat.matcher(email).matches();
     }
 
+    /**
+     * Function created to text the function isValid "check syntax of email to get only valid ones".
+     */
     public static void emailAddressesArray() {
-        // Function created to text the function isValid "check syntax of email to get only valid ones".
+
         String[] testEmailAddresses = {"email@example.com", "firstname.lastname@example.com",
                 "email@subdomain.example.com", "firstname+lastname@example.com", "email@123.123.123.123",
                 "email@[123.123.123.123]", "email@example.com", "1234567890@example.com", "email@example-one.com",
