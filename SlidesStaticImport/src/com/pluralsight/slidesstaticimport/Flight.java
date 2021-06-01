@@ -1,8 +1,15 @@
 package com.pluralsight.slidesstaticimport;
 
-public class Flight {
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class Flight
+        implements Comparable<Flight>, Iterable<Passenger> {
     int passengers;
     int seats = 150;
+    private ArrayList<Passenger> passengerList = new ArrayList<>();
+
+    private int flightTime ;
 
     private int totalCheckedBags;
 
@@ -119,7 +126,15 @@ public class Flight {
 
         return flightNumber == flight.flightNumber &&
                 flightClass == flight.flightClass;
-}
+    }
+    public int compareTo(Flight flight) {
+        // Flights are sorted by time of day. Ordering starts with those just after midnight and
+        // continuing through the rest of the day. (i.e. 15 (12:15am) comes before 90 (1:30am)
+        return flightTime - flight.flightTime;
+    }
 
+    public Iterator<Passenger> iterator() {
+        return passengerList.iterator();
+    }
 }
 

@@ -2,8 +2,11 @@ package com.pluralsight.userregistrationprogram;
 
 import java.io.*;
 
+/**
+ * Non use class make copy of a file
+ */
 public class CopyFile {
-    // Non use class make copy of a file
+
     public static void CopyFile(File input, File output) throws FileNotFoundException {
 
         try {

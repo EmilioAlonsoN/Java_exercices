@@ -11,13 +11,18 @@ import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 
+
+/**
+ * This is a Crypto class use for of all the task required to deal with encryption and decryption.
+ */
 public class CryptoTools {
-    // This is a Crypto class use for of all the task required to deal with encryption and decryption.
 
     public CryptoTools() { }
 
+    /**
+     * Secret key generator.
+     */
     public static SecretKey generateKey() throws NoSuchAlgorithmException {
-        // Secret key generator.
 
         KeyGenerator generator = KeyGenerator.getInstance("AES");
         generator.init(256); //generate 256 bit key
@@ -27,9 +32,11 @@ public class CryptoTools {
         return secretKey;
     }
 
+    /**
+     * Encryption using Cipher method.
+     */
     public static void encryptMode(SecretKey secretKey) throws InvalidKeyException, NoSuchAlgorithmException,
             InvalidKeySpecException, IOException, NoSuchPaddingException, InvalidAlgorithmParameterException {
-        // Encryption using Cipher method.
 
         FileInputStream nonEncryptedFile = new FileInputStream("C:\\Users\\valde\\IdeaProjects" +
                                                         "\\UserRegistrationProgram\\decrypted_file_accounts.txt");
@@ -54,9 +61,12 @@ public class CryptoTools {
         myWriter.close();
     }
 
+
+    /**
+     * Decryption using Cipher method.
+     */
     public static void decryptMode() throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
                                             IOException, NoSuchPaddingException, InvalidAlgorithmParameterException {
-        // Decryption using Cipher method.
 
         FileInputStream encryptFile = new FileInputStream("C:\\Users\\valde\\IdeaProjects" +
                                                      "\\UserRegistrationProgram\\encrypted_file_accounts.txt");
@@ -78,8 +88,10 @@ public class CryptoTools {
         bufferedReader.close();
     }
 
+    /**
+     * Write the file with the chosen encryption algorithm.
+     */
     private static void writeTheFileEncryption(InputStream input, OutputStream output) throws IOException {
-        // Write the file with the chosen encryption algorithm.
 
         byte[] buffer = new byte[64];
         int numOfBytesRead;
