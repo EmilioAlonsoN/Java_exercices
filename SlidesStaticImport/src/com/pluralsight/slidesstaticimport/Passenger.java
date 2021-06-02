@@ -1,10 +1,32 @@
 package com.pluralsight.slidesstaticimport;
 
 public class Passenger implements Comparable<Passenger> {
-    private int memberLevel; // 3 (1st priority), 2, 1
-    private int memberDays;
-
     private String name;
+
+    public static class RewardProgram {
+        private int memberLevel; // 3 (1st priority), 2, 1
+        private int memberDays;
+
+        public int getMemberLevel() {
+            return memberLevel;
+        }
+        public void setMemberLevel(int memberLevel) {
+            this.memberLevel = memberLevel;
+        }
+
+        public int getMemberDays() {
+            return memberDays;
+        }
+        public void setMemberDays(int memberDays) {
+            this.memberDays = memberDays;
+        }
+    }
+
+    public RewardProgram getRewardProgram() {
+        return rewardProgram;
+    }
+
+    private RewardProgram rewardProgram = new RewardProgram();
 
     private int checkedBags;
     private int freeBags;
@@ -19,9 +41,9 @@ public class Passenger implements Comparable<Passenger> {
     }
 
     public Passenger(String name, int memberLevel, int memberDays) {
-        this.name = name;
-        this.memberLevel = memberLevel;
-        this.memberDays = memberDays;
+        this(name);
+        rewardProgram.memberLevel = memberLevel;
+        rewardProgram.memberDays = memberDays;
     }
 
     public Passenger(int freeBags) {
@@ -54,14 +76,6 @@ public class Passenger implements Comparable<Passenger> {
         this.freeBags = freeBags;
     }
 
-    public int getMemberLevel() {
-        return memberLevel;
-    }
-
-    public int getMemberDays() {
-        return memberDays;
-    }
-
     public String getName() {
         return name;
     }
@@ -70,21 +84,11 @@ public class Passenger implements Comparable<Passenger> {
         this.name = name;
     }
 
+    @Override
     public int compareTo(Passenger p) {
-        int returnValue = p.memberLevel - memberLevel;
+        int returnValue = p.rewardProgram.memberLevel - rewardProgram.memberLevel;
         if(returnValue == 0)
-            returnValue = p.memberDays - memberDays;
-        // Set showComparisonInfo to false to stop displaying comparison details
-        boolean showComparisonInfo = true;
-        if(showComparisonInfo) {
-            System.out.println("Comparing " + getName() + " to " + p.getName());
-            System.out.println("     Current | name: " + getName() + " | level: " + getMemberLevel() +
-                    " | member days: " + getMemberDays());
-            System.out.println("     Received | name: " + p.getName() + " | level: " + p.getMemberLevel() +
-                    " | member days: " + p.getMemberDays());
-            System.out.println("     returnValue: " + returnValue);
-
-        }
+            returnValue = p.rewardProgram.memberDays - rewardProgram.memberDays;
         return returnValue;
     }
 }

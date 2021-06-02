@@ -21,8 +21,22 @@ public class Main {
         doCalculation(multiplier, 11.0d, 3.0d);
 
          */
-        executeInteractively();
+        //executeInteractively();
         //performMoreCalculations();
+        dynamicInteractivity();
+    }
+
+    private static void dynamicInteractivity() {
+        DynamicHelper helper = new DynamicHelper(new MathProcessing[] { new Adder(), new Subtracter(),
+                                                                        new Multiplier(), new Divider(),
+                                                                        new PowerOf()});
+
+        System.out.println("Enter an operation name and two numbers:");
+        Scanner scanner = new Scanner(System.in);
+        String userInput = scanner.nextLine();
+
+        helper.process(userInput);
+
     }
 
     static void executeInteractively() {

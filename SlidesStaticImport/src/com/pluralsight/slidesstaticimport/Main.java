@@ -17,8 +17,10 @@ public class Main {
         useEqualsWithSuper();
         inheritanceAndConstructors()
          */
-        flightWithIterator();
-        comparable();
+        //flightWithIterator();
+        //comparable();
+        nestedType();
+        innerClass();
     }
 
     private static void flightWithIterator() {
@@ -39,6 +41,47 @@ public class Main {
         System.out.println();
     }
 
+    private static void nestedType() {
+        System.out.println("***************************");
+        System.out.println("Nested Class - Passenger.RewardProgram");
+        System.out.println();
+
+        Passenger steve = new Passenger("Steve", 3, 180);
+
+        Passenger.RewardProgram platinum = new Passenger.RewardProgram();
+        platinum.setMemberLevel(3);
+
+        if(steve.getRewardProgram().getMemberLevel() == platinum.getMemberLevel())
+            System.out.println("Steve is platinum");
+
+        System.out.println("***************************");
+        System.out.println();
+    }
+
+    private static void innerClass() {
+        System.out.println("***************************");
+        System.out.println("Inner Class - Flight.FlightIterable");
+        System.out.println();
+
+        Flight f175 = new Flight(175);
+        f175.add1Passenger(new Passenger("Luisa", 1, 180));
+        f175.add1Passenger(new Passenger("Jack", 1, 90));
+        f175.add1Passenger(new Passenger("Ashanti", 3, 730));
+        f175.add1Passenger(new Passenger("Harish", 2, 150));
+
+        System.out.println(" ** Passenger order using Flight class' Iterable implementation **");
+        for(Passenger p : f175)
+            System.out.println(p.getName());
+
+        System.out.println();
+        System.out.println(" ** Passenger order using FlightIterable class' Iterable implementation **");
+        for(Passenger p : f175.getOrderedPassengers())
+            System.out.println(p.getName());
+
+        System.out.println("***************************");
+        System.out.println();
+    }
+/*
     private static void comparable() {
         System.out.println("***************************");
         System.out.println("Sorting Passenger array with Comparable");
@@ -65,6 +108,8 @@ public class Main {
         System.out.println("***************************");
         System.out.println();
     }
+
+ */
 
     private static void inheritance_CargoFlightReference() {
         System.out.println("***************************");
@@ -127,7 +172,7 @@ public class Main {
 
         System.out.println("Flight reference with Flight instance - seats");
         Flight f1 = new Flight();
-        System.out.println(f1.seats);
+        System.out.println(f1.getSeats());
 
         System.out.println();
         System.out.println("CargoFlight reference with CargoFlight instance - seats");
@@ -137,7 +182,7 @@ public class Main {
         System.out.println();
         System.out.println("Flight reference with CargoFlight instance - seats");
         Flight f2 = new CargoFlight();
-        System.out.println(f2.seats);
+        System.out.println(f2.getSeats());
 
         System.out.println();
         System.out.println("Flight reference with CargoFlight instance - add1Passenger");
