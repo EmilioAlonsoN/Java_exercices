@@ -61,6 +61,7 @@ public class DatabaseClass {
                 " NAME           TEXT    NOT NULL," +
                 " SURNAME        TEXT    NOT NULL," +
                 " EMAIL          TEXT    NOT NULL,"+
+                " USERNAME       TEXT    NOT NULL," +
                 " PASSWORD       TEXT    NOT NULL)";
         ArrayList<String> result = queryDatabase(conn, sql);
         System.out.println(result);
@@ -97,14 +98,14 @@ public class DatabaseClass {
         return resultset.next();
     }
 
-    public static boolean checkForDuplicatesDBEmail(Connection conn, String inputUsername) throws SQLException {
+    public static boolean checkForDuplicatesDBEmail(Connection conn, String inputEmail) throws SQLException {
         // Returns true if this email already exists in the database
 
         Statement statement = conn.createStatement();
 
         String query = String.format("select email\n" +
                 "from users\n" +
-                "WHERE email = '%s' ;", inputUsername);
+                "WHERE email = '%s' ;", inputEmail);
 
         ResultSet resultset = statement.executeQuery(query);
 

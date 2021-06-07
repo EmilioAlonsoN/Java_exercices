@@ -25,12 +25,13 @@ public class Main {
         System.out.println("Welcome to my App.");
         System.out.println("From now on you will be part of the PinkSkin community.");
         System.out.println("What would you like to do?");
-        System.out.println("1 Make new Account\n2 Login\n3 Exit");
+        System.out.println("1 Make new Account\n2 Login\n3 User AutoGenerator\n4 Exit");
         String option = scanner.next();
         switch (option) {
             case "1" -> NewUser.newUser(conn);
             case "2" -> LoginMenu.loginMenu(conn);
-            case "3" -> {
+            case "3" -> UserGenerator.generateUsers(conn);
+            case "4" -> {
                 DataClass.deleteFile();
                 System.out.println("See you again PigSkin...............");
                 System.exit(0);
