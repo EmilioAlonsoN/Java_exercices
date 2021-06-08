@@ -12,7 +12,17 @@ import java.sql.SQLException;
 import java.util.Random;
 import java.util.Scanner;
 
+
+/**
+ * Class use to autogenerate users and add it to the database.
+ */
 public class UserGenerator {
+
+    /**
+     * Function use to choose the number of new user to be created, will calculate the time consume on the process
+     * express on seconds.
+     * Password will be created with the autoPasswordGenerator function form NewUser class.
+     */
 
     public static void generateUsers(Connection conn) throws SQLException, NoSuchAlgorithmException,
             InvalidAlgorithmParameterException, NoSuchPaddingException, IOException, InvalidKeySpecException,
@@ -43,7 +53,9 @@ public class UserGenerator {
         Main.mainMenu(conn);
     }
 
-
+    /**
+     * Function use to random choose a name.
+     */
     private static String getName() {
         String[] name = {"James", "Puta", "Mary", "Robert", "Patricia", "John", "Jennifer", "Michael",
                 "Linda", "William", "Elizabeth", "David", "Barbara", "Stefani", "Richard", "Susan", "Joseph", "Jessica",
@@ -71,6 +83,9 @@ public class UserGenerator {
         return name[randomName];
     }
 
+    /**
+     * Function use to random choose a surname.
+     */
     private static String getSurname() {
         String[] surname = {"Hoxha", "Prifti", "Koetsier", "Shehu", "Dervishi", "Bektashi", "Begu", "Gjoni or Gjonaj",
                 "Leka", "Lekaj", "Alex", "Gjoni", "John", "Murati", "Murad", "Mehmeti", "Mehmed", "Hysi", "Gjika",
@@ -102,9 +117,12 @@ public class UserGenerator {
         return surname[randomSurname];
     }
 
+    /**
+     * Function use to random generate a email base on the name and surname and adding some random year.
+     */
     private static String getEmail(Connection conn, String name, String surname) throws SQLException {
-        int min = 0;
-        int max = 214748364;
+        int min = 1910;
+        int max = 2004;
         int year = randomNumberGenerator(min, max);
 
         String[] middleEmail = {"hotmail", "msn", "yahoo", "sbcglobal", "gmail", "aol", "outlook", "verizon", "att",
@@ -126,6 +144,17 @@ public class UserGenerator {
         return email;
     }
 
+    /**
+     * Function use to random generate a year that will be added to the email.
+     */
+    private static int randomNumberGenerator(int min, int max) {
+        double year = (Math.random()*((max-min)+1))+min;
+        return (int) year;
+    }
+
+    /**
+     * Function use to random generate a username base on the surname chosen and adding some randomness.
+     */
     private static String getUsername(Connection conn, String surname) throws SQLException {
 
         String randomUsernamePart = NewUser.passwordGenerator((char) 10);
@@ -138,8 +167,5 @@ public class UserGenerator {
         return username;
     }
 
-    private static int randomNumberGenerator(int min, int max) {
-        double year = (Math.random()*((max-min)+1))+min;
-        return (int) year;
-    }
+
 }

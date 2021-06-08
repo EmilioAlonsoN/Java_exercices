@@ -18,7 +18,11 @@ import java.util.Scanner;
  */
 public class NewUser {
 
-    public NewUser() { }
+    private String name = null;
+
+    public NewUser() {
+        this.name = nameRegs();
+    }
 
     public static void newUser(Connection conn) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException,
             InvalidKeySpecException, InvalidKeyException, InvalidAlgorithmParameterException, SQLException {
@@ -41,6 +45,10 @@ public class NewUser {
         DataClass.saveData (name, surname, email, username, pass); //Save data into a file.
         DatabaseClass.saveUser(conn,name, surname, email, username,pass);
 
+        System.out.println("Your user name is:" + username);
+        System.out.println("Your password is:" + pass);
+        System.out.println("Successfully registered.");
+
         Main.encryptFile(key);
 
         Main.mainMenu(conn);
@@ -49,7 +57,7 @@ public class NewUser {
     /**
      * Function to input a name.
      */
-    static String nameRegs() {
+    private static String nameRegs() {
 
         Scanner scanner = new Scanner(System.in);
 
@@ -68,7 +76,7 @@ public class NewUser {
     /**
      * Function to input surname.
      */
-    static String surnameRegs() {
+    private static String surnameRegs() {
 
         Scanner scanner = new Scanner(System.in);
 

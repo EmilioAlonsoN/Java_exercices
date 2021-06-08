@@ -26,9 +26,6 @@ public class DataClass {
             bw.write(String.format("Name:%s Surname:%s Email:%s User:%s Password:%s",
                     name, surname, email, username, pass));
             bw.append("\n");
-            //System.out.println("Your user name is:" + username);
-            //System.out.println("Your password is:" + pass);
-            //System.out.println("Successfully registered.");
             bw.close();
             myWriter.close();
         } catch (IOException e) {
