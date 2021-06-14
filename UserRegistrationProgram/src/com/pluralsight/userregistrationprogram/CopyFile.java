@@ -15,16 +15,15 @@ public class CopyFile {
             FileWriter fileWriter = new FileWriter(output, true);
             String s;
 
-            while ((s = bufferedReader.readLine()) != null) { // read a line
+            while ((s = bufferedReader.readLine()) != null) {
                 fileWriter.append("\n");
-                fileWriter.write(s); // write to output file
+                fileWriter.write(s);
                 fileWriter.flush();
             }
             bufferedReader.close();
             fileWriter.close();
             System.out.println("file copied");
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

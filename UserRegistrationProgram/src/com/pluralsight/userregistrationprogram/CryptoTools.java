@@ -21,11 +21,12 @@ public class CryptoTools {
 
     /**
      * Secret key generator.
+     * Generate 256 bit key.
      */
-    public static SecretKey generateKey() throws NoSuchAlgorithmException {
+    protected static SecretKey generateKey() throws NoSuchAlgorithmException {
 
         KeyGenerator generator = KeyGenerator.getInstance("AES");
-        generator.init(256); //generate 256 bit key
+        generator.init(256);
         SecretKey secretKey = generator.generateKey();
         secretKey.getFormat();
 
@@ -35,7 +36,7 @@ public class CryptoTools {
     /**
      * Encryption using Cipher method.
      */
-    public static void encryptMode(SecretKey secretKey) throws InvalidKeyException, NoSuchAlgorithmException,
+    private static void encryptMode(SecretKey secretKey) throws InvalidKeyException, NoSuchAlgorithmException,
             InvalidKeySpecException, IOException, NoSuchPaddingException, InvalidAlgorithmParameterException {
 
         FileInputStream nonEncryptedFile = new FileInputStream("C:\\Users\\valde\\IdeaProjects" +
@@ -65,7 +66,7 @@ public class CryptoTools {
     /**
      * Decryption using Cipher method.
      */
-    public static void decryptMode() throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
+    private static void decryptMode() throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException,
                                             IOException, NoSuchPaddingException, InvalidAlgorithmParameterException {
 
         FileInputStream encryptFile = new FileInputStream("C:\\Users\\valde\\IdeaProjects" +
@@ -100,6 +101,32 @@ public class CryptoTools {
         }
         output.close();
         input.close();
+    }
+
+    /**
+     * Function use to encrypt the file with the users data.
+     */
+    public static void encryptFile(SecretKey key) throws InvalidAlgorithmParameterException {
+
+        try {
+            encryptMode(key);
+        } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IOException |
+                InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Function use to decrypt the file with the users data.
+     */
+    public static void decryptFile() {
+
+        try {
+            decryptMode();
+        } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IOException |
+                InvalidAlgorithmParameterException | InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
     }
 }
 

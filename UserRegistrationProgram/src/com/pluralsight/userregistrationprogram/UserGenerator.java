@@ -29,14 +29,14 @@ public class UserGenerator {
             InvalidKeyException {
 
         SecretKey key = CryptoTools.generateKey();
-        Main.decryptFile();
+        CryptoTools.decryptFile();
 
         System.out.println("How many new users do you want to create? ");
-        Scanner x = new Scanner(System.in);
-        int n = x.nextInt();
+        Scanner scanner = new Scanner(System.in);
+        int amount = scanner.nextInt();
         double startTime = System.nanoTime();
 
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < amount; i++) {
             String name = getName();
             String surname = getSurname();
             String email = getEmail(conn, name, surname);
@@ -49,7 +49,7 @@ public class UserGenerator {
 
         double duration = ((endTime - startTime) / 1000000) / 1000;
         System.out.println("Duration on seconds: " + duration);
-        Main.encryptFile(key);
+        CryptoTools.encryptFile(key);
         Main.mainMenu(conn);
     }
 
@@ -57,9 +57,9 @@ public class UserGenerator {
      * Function use to random choose a name.
      */
     private static String getName() {
-        String[] name = {"James", "Puta", "Mary", "Robert", "Patricia", "John", "Jennifer", "Michael",
-                "Linda", "William", "Elizabeth", "David", "Barbara", "Stefani", "Richard", "Susan", "Joseph", "Jessica",
-                "Thomas", "Sarah", "Charles", "Karen", "Christopher", "Nancy", "Daniel", "Lisa", "Matthew", "Betty", "Anthony",
+        String[] name = {"James", "Puta", "Mary", "Robert", "Patricia", "John", "Jennifer", "Michael", "Linda",
+                "William", "Elizabeth", "David", "Barbara", "Stefani", "Richard", "Susan", "Joseph", "Jessica", "Thomas",
+                "Sarah", "Charles", "Karen", "Christopher", "Nancy", "Daniel", "Lisa", "Matthew", "Betty", "Anthony",
                 "Margaret", "Mark", "Sandra", "Donald", "Ashley", "Steven", "Kimberly", "Paul", "Emily", "Andrew", "Donna",
                 "Joshua", "Michelle", "Kenneth", "Dorothy", "Kevin", "Carol", "Brian", "Amanda", "George", "Melissa",
                 "Edward", "Deborah", "Ronald", "Stephanie", "Timothy", "Rebecca", "Jason", "Sharon", "Jeffrey", "Laura",

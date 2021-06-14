@@ -1,7 +1,6 @@
 package com.pluralsight.userregistrationprogram;
 
 import org.postgresql.util.PSQLException;
-
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -46,9 +45,10 @@ public class DatabaseClass {
      * Function use to connect with a PostgrestSQL database.
      */
     public static Connection getConnection() {
-        final String url = "jdbc:postgresql://localhost:5432/urp";
-        final String user = "urp";
-        final String password = "urp6008";
+
+        String url = new DatabaseClass().url;
+        String user = new DatabaseClass().user;
+        String password = new DatabaseClass().password;
 
         Connection connection = null;
 
@@ -101,15 +101,16 @@ public class DatabaseClass {
 
     /**
      * Function use to check for usernames duplicate into the database.
+     * Returns true if this username already exists in the database.
      */
     public static boolean checkForDuplicatesDBUser(Connection conn, String inputUsername) throws SQLException {
-        // Returns true if this username already exists in the database
 
         Statement statement = conn.createStatement();
 
-        String query = String.format("select username\n" +
-                                            "from users\n" +
-                                            "WHERE username = '%s' ;", inputUsername);
+        String query = String.format("""
+                select username
+                from users
+                WHERE username = '%s' ;""", inputUsername);
 
         ResultSet resultset = statement.executeQuery(query);
 
@@ -118,15 +119,16 @@ public class DatabaseClass {
 
     /**
      * Function use to check for emails duplicate into the database.
+     * Returns true if this email already exists in the database.
      */
     public static boolean checkForDuplicatesDBEmail(Connection conn, String inputEmail) throws SQLException {
-        // Returns true if this email already exists in the database
 
         Statement statement = conn.createStatement();
 
-        String query = String.format("select email\n" +
-                "from users\n" +
-                "WHERE email = '%s' ;", inputEmail);
+        String query = String.format("""
+                select email
+                from users
+                WHERE email = '%s' ;""", inputEmail);
 
         ResultSet resultset = statement.executeQuery(query);
 
@@ -135,9 +137,10 @@ public class DatabaseClass {
 
     /**
      * Function use to query to the database.
+     * Returns the output from a query that is sent to the connected database.
      */
     public static ArrayList<String> queryDatabase(Connection conn, String query) throws SQLException {
-        //Returns the output from a query that is sent to the connected database
+
         ArrayList<String> allRows = new ArrayList<>();
         Statement statement = conn.createStatement();
         ResultSet resultSet = null;
