@@ -18,16 +18,10 @@ import java.util.Scanner;
  */
 public class NewUser {
 
-    private String name = null;
-
-    public NewUser() {
-        this.name = nameRegs();
-    }
-
     public static void newUser(Connection conn) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException,
             InvalidKeySpecException, InvalidKeyException, InvalidAlgorithmParameterException, SQLException {
         SecretKey key = CryptoTools.generateKey();
-        Main.decryptFile();
+        CryptoTools.decryptFile();
 
         System.out.println("Registration App");
         System.out.println("App test ");
@@ -49,7 +43,7 @@ public class NewUser {
         System.out.println("Your password is:" + pass);
         System.out.println("Successfully registered.");
 
-        Main.encryptFile(key);
+        CryptoTools.encryptFile(key);
 
         Main.mainMenu(conn);
     }
@@ -96,7 +90,7 @@ public class NewUser {
      * Function for manual email input. Will check that it is a valid email, and compare it to the file and the data base
      * to avoid duplicate emails.
      */
-    private static String eMail() throws IOException, SQLException {
+    private static String eMail() throws IOException {
         // .
         Scanner scanner = new Scanner(System.in);
 
@@ -122,7 +116,7 @@ public class NewUser {
     /**
      * Function to input a username. Will compare it to the file and the database to avoid duplicate usernames.
      */
-    private static String userName() throws IOException, SQLException {
+    private static String userName() throws IOException {
 
         Scanner scanner = new Scanner(System.in);
         Scanner scanner1 = new Scanner(System.in);

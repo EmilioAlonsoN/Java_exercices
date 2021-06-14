@@ -2,7 +2,6 @@ package com.pluralsight.userregistrationprogram;
 
 
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -40,32 +39,4 @@ public class Main {
                     mainMenu(conn);
         }
     }
-
-    /**
-     * Function use to encrypt the file-database with the users data.
-     */
-    public static void encryptFile(SecretKey key) throws InvalidAlgorithmParameterException {
-
-        try {
-            CryptoTools.encryptMode(key);
-        } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IOException |
-                                                                                        InvalidKeySpecException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Function use to decrypt the file-database with the users data.
-     */
-    public static void decryptFile() {
-
-        try {
-            CryptoTools.decryptMode();
-        } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IOException |
-                                                    InvalidAlgorithmParameterException | InvalidKeySpecException e) {
-            e.printStackTrace();
-        }
-    }
-
-
 }

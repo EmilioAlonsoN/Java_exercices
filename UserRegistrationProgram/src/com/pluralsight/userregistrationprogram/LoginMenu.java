@@ -25,7 +25,7 @@ public class LoginMenu {
             NoSuchPaddingException, InvalidKeySpecException, InvalidKeyException, SQLException {
 
         SecretKey key = CryptoTools.generateKey();
-        Main.decryptFile();
+        CryptoTools.decryptFile();
 
         Scanner scanner = new Scanner(System.in);
         String checkUsername = loginCheckUser();
@@ -45,7 +45,7 @@ public class LoginMenu {
             System.out.print("What would you like to do? ");
             String nothing = scanner.nextLine();
             System.out.println(nothing + "HA HA HA was a joke :D ");
-            Main.encryptFile(key);
+            CryptoTools.encryptFile(key);
             //Main.deleteFile();
             Main.mainMenu(conn);
         }
