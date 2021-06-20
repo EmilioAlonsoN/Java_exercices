@@ -16,7 +16,9 @@ public class Main {
     public static void main(String[] args) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException,
             InvalidKeySpecException, InvalidKeyException, InvalidAlgorithmParameterException, SQLException {
         Connection conn = DatabaseClass.getConnection();
-        mainMenu(conn);
+        //DatabaseClass.setupDatabase(conn);
+        UserGenerator.generateUsers(conn);
+        //mainMenu(conn);
     }
     public static void mainMenu(Connection conn) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException,
             InvalidKeySpecException, InvalidKeyException, InvalidAlgorithmParameterException, SQLException {

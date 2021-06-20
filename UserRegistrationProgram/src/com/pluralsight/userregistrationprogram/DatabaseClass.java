@@ -21,9 +21,7 @@ public class DatabaseClass {
     public static void connectSQLite() {
         Connection conn = null;
         try {
-            // db parameters
             String url = "jdbc:sqlite:C:/sqlite/db/UserRegistrationProgram.db";
-            // create a connection to the database
             conn = DriverManager.getConnection(url);
 
             System.out.println("Connection to SQLite has been established.");
@@ -72,19 +70,20 @@ public class DatabaseClass {
                 "(ID SERIAL PRIMARY KEY  NOT NULL," +
                 " NAME           TEXT    NOT NULL," +
                 " SURNAME        TEXT    NOT NULL," +
-                " EMAIL          TEXT    NOT NULL,"+
+                " EMAIL          TEXT    NOT NULL," +
                 " USERNAME       TEXT    NOT NULL," +
-                " PASSWORD       TEXT    NOT NULL)";
+                " PASSWORD       TEXT    NOT NULL," +
+                " USER_ID        SERIAL  NOT NULL)";
         ArrayList<String> result = queryDatabase(conn, sql);
         System.out.println(result);
     }
 
     /**
      * Function use to write a new user into the database.
+     * Returns true if data has been saved successfully, else false.
      */
     public static void saveUser(Connection conn, String name, String surname, String email,
-                                                 String username, String password) throws SQLException {
-        //Returns true if data has been saved successfully, else false
+                                String username, String password) throws SQLException {
 
 
         PreparedStatement statement = conn.prepareStatement("INSERT INTO users " +
