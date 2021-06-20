@@ -70,9 +70,10 @@ public class DatabaseClass {
                 "(ID SERIAL PRIMARY KEY  NOT NULL," +
                 " NAME           TEXT    NOT NULL," +
                 " SURNAME        TEXT    NOT NULL," +
-                " EMAIL          TEXT    NOT NULL,"+
+                " EMAIL          TEXT    NOT NULL," +
                 " USERNAME       TEXT    NOT NULL," +
-                " PASSWORD       TEXT    NOT NULL)";
+                " PASSWORD       TEXT    NOT NULL," +
+                " USER_ID        SERIAL  NOT NULL)";
         ArrayList<String> result = queryDatabase(conn, sql);
         System.out.println(result);
     }
@@ -82,7 +83,7 @@ public class DatabaseClass {
      * Returns true if data has been saved successfully, else false.
      */
     public static void saveUser(Connection conn, String name, String surname, String email,
-                                                 String username, String password) throws SQLException {
+                                String username, String password) throws SQLException {
 
 
         PreparedStatement statement = conn.prepareStatement("INSERT INTO users " +
