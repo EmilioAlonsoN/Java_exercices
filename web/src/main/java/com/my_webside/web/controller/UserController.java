@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -33,12 +32,12 @@ public class UserController {
     }
 
     @RequestMapping("/list/{id}")
-    public Optional<Users> findOne(@PathVariable Long id) {
+    public Users findOne(@PathVariable Long id) {
         return userService.findOne(id);
     }
 
     @RequestMapping("/list")
     public List<Users> userList() {
-        return userService.userlist();
+        return userService.userList();
     }
 }

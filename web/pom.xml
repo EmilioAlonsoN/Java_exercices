@@ -11,8 +11,8 @@
 	<groupId>com.my_webside</groupId>
 	<artifactId>web</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>My_Webside</name>
-	<description>Webside project for Spring Boot</description>
+	<name>My_Website</name>
+	<description>Website project for Spring Boot</description>
 	<properties>
 		<java.version>16</java.version>
 	</properties>
@@ -53,6 +53,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>2.5.1</version>
 			</plugin>
 		</plugins>
 	</build>

@@ -19,9 +19,19 @@ public class Address extends AbstractPersistable<Long> implements Serializable {
     private String city;
     private String country;
 
+    private transient Long userId;
+
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private Users user;
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public String getAddress() {
         return address;
@@ -54,4 +64,5 @@ public class Address extends AbstractPersistable<Long> implements Serializable {
     public void setUser(Users user) {
         this.user = user;
     }
+
 }

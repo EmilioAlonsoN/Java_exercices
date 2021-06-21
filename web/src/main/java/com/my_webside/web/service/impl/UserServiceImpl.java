@@ -7,27 +7,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService{
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-
     @Override
-    public List<Users> userlist() {
+    public List<Users> userList() {
         return userRepository.findAll();
     }
 
     @Override
-    public Optional<Users> findOne(Long id) {
-        return userRepository.findById(id);
+    public Users findOne(Long id) {
+        return userRepository.getById(id);
     }
 
     @Override
@@ -40,4 +38,5 @@ public class UserServiceImpl implements UserService{
         userRepository.deleteById(id);
         return "{'message': 'User deleted successfully'}";
     }
+
 }
