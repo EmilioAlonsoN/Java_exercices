@@ -5,10 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
 @SpringBootApplication
-public class MyWebsideApplication {
+public class MyWebsiteApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(MyWebsideApplication.class, args);
+		SpringApplication.run(MyWebsiteApplication.class, args);
 	}
 
 	@GetMapping("/hello")
@@ -16,3 +17,5 @@ public class MyWebsideApplication {
 		return String.format("Hello %s!", name);
 	}
 }
+
+

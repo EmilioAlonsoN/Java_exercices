@@ -2,10 +2,7 @@ package com.my_webside.web.model;
 
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Set;
@@ -14,10 +11,13 @@ import java.util.Set;
 @Entity
 public class Users extends AbstractPersistable<Long> implements Serializable {
 
-
     @Serial
     private static final long serialVersionUID = -3620600524323376765L;
-    private String userId;
+
+
+    @GeneratedValue
+    private Long userId;
+
     private String username;
     private String name;
     private String surname;
@@ -26,6 +26,14 @@ public class Users extends AbstractPersistable<Long> implements Serializable {
 
     @OneToMany(targetEntity = Address.class, mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Address> addresses;
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public String getUsername() {
         return username;
@@ -67,12 +75,5 @@ public class Users extends AbstractPersistable<Long> implements Serializable {
         this.password = password;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 }
 

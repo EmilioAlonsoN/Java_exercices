@@ -3,12 +3,11 @@ package com.my_webside.web.service;
 import com.my_webside.web.model.Users;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UserService {
-    List<Users> userlist();
+    List<Users> userList();
 
-    Optional<Users> findOne(Long id);
+    Users findOne(Long id);
 
     Users addUser(Users user);
 
