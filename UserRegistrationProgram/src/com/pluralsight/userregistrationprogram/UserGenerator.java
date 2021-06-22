@@ -18,6 +18,8 @@ import java.util.Scanner;
  */
 public class UserGenerator {
 
+    private static String Name;
+    private static String Surname;
     /**
      * Function use to choose the number of new user to be created, will calculate the time consume on the process
      * express on seconds.
@@ -83,6 +85,10 @@ public class UserGenerator {
         return name[randomName];
     }
 
+    public static void setName(String name) {
+        UserGenerator.Name = name;
+    }
+
     /**
      * Function use to random choose a surname.
      */
@@ -115,6 +121,10 @@ public class UserGenerator {
         int randomSurname = random.nextInt(surname.length);
 
         return surname[randomSurname];
+    }
+
+    public static void setSurname(String surname) {
+        UserGenerator.Surname = surname;
     }
 
     /**
