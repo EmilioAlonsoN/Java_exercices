@@ -24,6 +24,10 @@ public class Users extends AbstractPersistable<Long> implements Serializable {
     private String email;
     private String password;
 
+    @ManyToOne
+    @JoinColumn(name="role_id")
+    private Role role;
+
     @OneToMany(targetEntity = Address.class, mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Address> addresses;
 
@@ -75,5 +79,12 @@ public class Users extends AbstractPersistable<Long> implements Serializable {
         this.password = password;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }
 

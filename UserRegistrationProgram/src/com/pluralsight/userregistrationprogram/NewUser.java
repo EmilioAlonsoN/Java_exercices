@@ -26,8 +26,8 @@ public class NewUser {
         System.out.println("Registration App");
         System.out.println("App test ");
 
-        String name = String.valueOf(nameRegs());
-        String surname = String.valueOf(surnameRegs());
+        String name = nameRegs();
+        String surname = surnameRegs();
         String email = String.valueOf(eMail());
 
         System.out.println("NOTE: Your user name is unique so it cannot be changed");
@@ -54,9 +54,12 @@ public class NewUser {
     private static String nameRegs() {
 
         Scanner scanner = new Scanner(System.in);
-
         System.out.print("Name: ");
         String name = scanner.nextLine();
+        if (name.contains(" ") || name.isEmpty()) {
+            System.out.println("Name can not contain spaces.");
+            return nameRegs();
+        }
 
         System.out.println("Is this you name? " + "\"" + name + "\"" + " " + "Press \" y \" to confirm else try again.");
         String confirmation = scanner.nextLine();
@@ -76,6 +79,9 @@ public class NewUser {
 
         System.out.print("Surname: ");
         String surname = scanner.nextLine();
+        if (surname.contains(" ") || surname.isEmpty()) {
+            return surnameRegs();
+        }
 
         System.out.println("Is this you name? " + "\"" + surname + "\"" + " " + "Press \" y \" to confirm else try again.");
         String confirmation = scanner.nextLine();
@@ -91,7 +97,7 @@ public class NewUser {
      * to avoid duplicate emails.
      */
     private static String eMail() throws IOException {
-        // .
+
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Please enter your email:");
@@ -124,7 +130,7 @@ public class NewUser {
         System.out.print("Username: ");
         String username = scanner.nextLine();
 
-        if (username.contains(" ")) {
+        if (username.contains(" ") || username.isEmpty()) {
             System.out.println("Username can not contain spaces.");
             return userName();
         }
