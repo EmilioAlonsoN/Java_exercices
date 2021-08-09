@@ -20,9 +20,11 @@ public class NewUser {
 
     public static void newUser(Connection conn) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException,
             InvalidKeySpecException, InvalidKeyException, InvalidAlgorithmParameterException, SQLException {
+
         SecretKey key = CryptoTools.generateKey();
         CryptoTools.decryptFile();
 
+        System.out.println("....................");
         System.out.println("Registration App");
         System.out.println("App test ");
 
@@ -30,6 +32,7 @@ public class NewUser {
         String surname = surnameRegs();
         String email = String.valueOf(eMail());
 
+        System.out.println("....................");
         System.out.println("NOTE: Your user name is unique so it cannot be changed");
         System.out.println("Choose your Username.");
 
@@ -39,9 +42,11 @@ public class NewUser {
         DataClass.saveData (name, surname, email, username, pass); //Save data into a file.
         DatabaseClass.saveUser(conn,name, surname, email, username,pass);
 
+        System.out.println("....................");
         System.out.println("Your user name is:" + username);
         System.out.println("Your password is:" + pass);
         System.out.println("Successfully registered.");
+        System.out.println("....................");
 
         CryptoTools.encryptFile(key);
 
@@ -54,6 +59,8 @@ public class NewUser {
     private static String nameRegs() {
 
         Scanner scanner = new Scanner(System.in);
+
+        System.out.println("....................");
         System.out.print("Name: ");
         String name = scanner.nextLine();
         if (name.contains(" ") || name.isEmpty()) {
@@ -67,6 +74,7 @@ public class NewUser {
         if (!confirmation.equals("y")) {
             return nameRegs();
         }
+        scanner.close();
         return name;
     }
 
@@ -77,6 +85,7 @@ public class NewUser {
 
         Scanner scanner = new Scanner(System.in);
 
+        System.out.println("....................");
         System.out.print("Surname: ");
         String surname = scanner.nextLine();
         if (surname.contains(" ") || surname.isEmpty()) {
@@ -89,6 +98,7 @@ public class NewUser {
         if (!confirmation.equals("y")) {
             return surnameRegs();
         }
+        scanner.close();
         return surname;
     }
 
@@ -100,6 +110,7 @@ public class NewUser {
 
         Scanner scanner = new Scanner(System.in);
 
+        System.out.println("....................");
         System.out.print("Please enter your email:");
         String email = scanner.nextLine();
 
@@ -114,8 +125,10 @@ public class NewUser {
                 eMail();
             }
             else
+                scanner.close();
                 return email;
         }
+        scanner.close();
         return email;
     }
 
@@ -125,8 +138,8 @@ public class NewUser {
     private static String userName() throws IOException {
 
         Scanner scanner = new Scanner(System.in);
-        Scanner scanner1 = new Scanner(System.in);
 
+        System.out.println("....................");
         System.out.print("Username: ");
         String username = scanner.nextLine();
 
@@ -137,6 +150,7 @@ public class NewUser {
         else if (!username.contains(" ")) {
             boolean hasDuplicate = DataClass.checkForDuplicates("User:", username);
             if (hasDuplicate) {
+                System.out.println("....................");
                 System.out.println("Already exists.");
                 System.out.println("Please choose another one.");
                 return userName();
@@ -144,12 +158,14 @@ public class NewUser {
             else {
                 System.out.println("Is this your Username?" + " " + "\"" + username + "\"" +
                         " " + "Press \" y \" to confirm else try again.");
-                String confirmation = scanner1.nextLine();
+                String confirmation = scanner.nextLine();
                 if (!confirmation.equals("y")) {
+                    scanner.close();
                     return userName();
                 }
             }
         }
+        scanner.close();
         return username;
     }
 
@@ -161,7 +177,9 @@ public class NewUser {
 
         Scanner scanner = new Scanner(System.in);
 
+        System.out.println("....................");
         System.out.print("Password Option:\n1 Autogenerate password \n2 Choose yourself \n3 Main menu \n ");
+        System.out.println("....................");
         String option = scanner.nextLine();
 
         switch (option) {
@@ -177,6 +195,7 @@ public class NewUser {
                 return passwordOptions(conn);
             }
         }
+        scanner.close();
         return null;
     }
 
@@ -187,18 +206,15 @@ public class NewUser {
 
         Scanner scanner = new Scanner(System.in);
 
+        System.out.println("....................");
         System.out.println("Please enter a password with at least 8 characters");
 
         System.out.println("Password: ");
         String password = scanner.nextLine();
         System.out.println(password);
 
-        if (password.contains(" ")) {
-            System.out.println("Password can not contain spaces.");
-            return selfChoosePassword();
-        }
-        else if (password.isEmpty()) {
-            System.out.println("Password is empty.");
+        if (password.contains(" ") || password.isEmpty()) {
+            System.out.println("Password can not contain spaces or be empty.");
             return selfChoosePassword();
         }
         else if (password.length() < 8) {
@@ -212,11 +228,13 @@ public class NewUser {
             boolean checkPassword = password.equals(confirmationPassword);
 
             if (!checkPassword) {
+                System.out.println("....................");
                 System.out.println("Your password do not match.");
                 System.out.println("Try again PinkSkin");
                 return selfChoosePassword();
             }
         }
+        scanner.close();
         return password;
     }
 

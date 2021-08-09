@@ -86,6 +86,7 @@ public class CryptoTools {
         cipher.init(Cipher.DECRYPT_MODE, Key, ivParameterSpec, SecureRandom.getInstance("SHA1PRNG"));
         CipherOutputStream cipherOutputStream = new CipherOutputStream(nonEncryptedFile, cipher);
         writeTheFileEncryption(encryptFile, cipherOutputStream);
+        keyFile.close();
         bufferedReader.close();
     }
 

@@ -64,6 +64,7 @@ public class DatabaseClass {
 
     /**
      * Function use to created a table and his columns in the database.
+     * Use only ones to setup the data base.
      */
     public static void setupDatabase(Connection conn) throws SQLException {
         String sql = "CREATE TABLE Users " +
