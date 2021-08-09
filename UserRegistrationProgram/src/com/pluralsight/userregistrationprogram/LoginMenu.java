@@ -46,6 +46,7 @@ public class LoginMenu {
             String nothing = scanner.nextLine();
             System.out.println(nothing + "HA HA HA was a joke :D ");
             CryptoTools.encryptFile(key);
+            scanner.close();
             //Main.deleteFile();
             Main.mainMenu(conn);
         }
@@ -99,6 +100,7 @@ public class LoginMenu {
                 loginCheckUser();
             }
             else {
+                scanner.close();
                 return username;
             }
         }
@@ -126,6 +128,7 @@ public class LoginMenu {
                 loginCheckEmail();
             }
             else {
+                scanner.close();
                 return email;
             }
         }
@@ -153,6 +156,7 @@ public class LoginMenu {
                 loginCheckPassword();
             }
             else {
+                scanner.close();
                 return pass;
             }
         }

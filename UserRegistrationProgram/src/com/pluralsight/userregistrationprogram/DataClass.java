@@ -52,6 +52,8 @@ public class DataClass {
             words = line.split(" ");
             for (String word : words) {
                 if (word.equals(input)) {
+                    fileReader.close();
+                    bufferedReader.close();
                     return true;
                 }
             }
