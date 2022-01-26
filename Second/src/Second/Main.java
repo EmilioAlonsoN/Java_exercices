@@ -10,17 +10,19 @@ public class Main {
         System.out.println("Type a number: ");
         int num = scanner.nextInt();
 
-        System.out.println("type a digit to add: ");
-        int digit = scanner.nextInt();
+        //System.out.println("type a digit to add: ");
+        //int digit = scanner.nextInt();
 
-        MaximumPossible(num , digit);
+        int maxVal = MaximumPossible(num);
+        System.out.println("Maximum Possible Value is : " + maxVal);
     }
 
-    static int MaximumPossible(int num, int digit)
-    {
+    static int MaximumPossible(int num) {
+
+        int digit = 5;
+
         // edge case
         if (num == 0) {
-            System.out.println("Maximum Possible Value is : " + digit * 10);
             return digit * 10;
         }
 
@@ -35,27 +37,24 @@ public class Main {
         int position = 1;
 
         // count the number of digits in the given number.
-        while (n > 0)
-        {
+        while (n > 0) {
             counter++;
             n = n / 10;
         }
 
         // loop to place digit at every possible position in the number,
         // and check the obtained value.
-        for (int i = 0; i <= counter; i++)
-        {
+        for (int i = 0; i <= counter; i++) {
+
             int newVal = ((num / position) * (position * 10)) + (digit * position) + (num % position);
 
             // if new value is greater the maxVal
-            if (newVal * negative > maxVal)
-            {
+            if (newVal * negative > maxVal) {
                 maxVal = newVal * negative;
             }
 
             position = position * 10;
         }
-        System.out.println("Maximum Possible Value is : " + maxVal);
         return maxVal;
     }
 
